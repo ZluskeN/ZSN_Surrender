@@ -11,8 +11,8 @@ _this spawn
 		{
 			if ([_this] call ace_medical_fnc_getUnconsciousCondition) then
 			{
-				waituntil {!([_this] call ace_medical_fnc_getUnconsciousCondition)};
 				[_this] join grpNull;
+				waituntil {!([_this] call ace_medical_fnc_getUnconsciousCondition)};
 				_this allowFleeing 1;
 			};
 			if (fleeing _this) then
