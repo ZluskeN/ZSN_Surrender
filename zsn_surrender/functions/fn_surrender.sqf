@@ -19,16 +19,10 @@ _this spawn
 			{
 				if(_ms countSide nearestObjects [getpos _this, [], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] < 2) then
 				{
+					if (!(isNull objectParent _this)) then {unassignVehicle _this;};
 					[_this, true] call ace_captives_fnc_setSurrendered;
 					waituntil {_ms countSide nearestObjects [getpos _this, [], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2};
 					[_this, false] call ace_captives_fnc_setSurrendered;
-				};
-			};
-			if (!(isNull objectParent _this)) then 
-			{
-				if ((getpos (_this findNearestEnemy getpos _this)) distance (getpos _this) < 50) then 
-				{
-					unassignVehicle _this;
 				};
 			};
 		};
