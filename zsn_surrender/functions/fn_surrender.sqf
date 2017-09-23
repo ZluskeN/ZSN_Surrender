@@ -6,7 +6,7 @@ _this spawn
 	_ms = side _this;
 	_this addItem "ACE_CableTie";
 	if (_this in playableunits) exitwith {};
-	waituntil {sleep 0.1; _this knowsAbout (_this findNearestEnemy getpos _this) > 0;};
+	waituntil {sleep 1; _this knowsAbout (_this findNearestEnemy getpos _this) > 0;};
 	while {alive _this} do
 	{
 		if ([_this] call ace_medical_fnc_getUnconsciousCondition) then
