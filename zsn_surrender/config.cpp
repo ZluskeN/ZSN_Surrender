@@ -41,8 +41,10 @@ class CfgFunctions
 	{
 		class Functions
 		{
-			file = "\zsn_surrender\functions";
-			class surrender{};
+			class surrender
+			{
+				file = "\zsn_surrender\functions\fn_surrender.sqf";
+			};
 		};
 	};
 };
