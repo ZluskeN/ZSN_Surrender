@@ -15,7 +15,7 @@ _this spawn
 			{
 				if (!(isNull objectParent _this)) then {unassignVehicle _this;};
 				[_this, true] call ace_captives_fnc_setSurrendered;
-				waituntil {sleep 0.1; _ms countSide nearestObjects [getpos _this, ["CAManBase"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2;};
+				waituntil {sleep 0.1; _ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2;};
 				[_this, false] call ace_captives_fnc_setSurrendered;
 			};
 		};
