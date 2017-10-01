@@ -26,13 +26,16 @@ _this spawn
 	private ["_this"];
 	_this = _this select 0;
 	if (_this in playableunits) exitwith {};
-	while {currentWeapon _this isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]} do
+	while {alive _this} do
 	{
-		if (behaviour _this == "SAFE") then
+		if (currentWeapon _this isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then
 		{
-			[_this] call ace_weaponselect_fnc_putWeaponAway;
-			waituntil {sleep 1; (behaviour _this != "SAFE");};
-			_this selectWeapon handgunWeapon _this;
+			if (behaviour _this == "SAFE") then
+			{
+				[_this] call ace_weaponselect_fnc_putWeaponAway;
+				waituntil {sleep 1; (behaviour _this != "SAFE");};
+				_this selectWeapon handgunWeapon _this;
+			};
 		};
 		sleep 1;
 	};
