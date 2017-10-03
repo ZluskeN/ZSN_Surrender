@@ -15,10 +15,11 @@ _this spawn
 			{
 				if (!(isNull objectParent _this)) then {unassignVehicle _this;};
 				[_this, true] call ace_captives_fnc_setSurrendered;
-				waituntil {sleep 0.1; _ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2;};
+				waituntil {sleep 0.5; _ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2;};
 				[_this, false] call ace_captives_fnc_setSurrendered;
 			};
 		};
+		sleep 0.5;
 	};
 };
 _this spawn
@@ -30,10 +31,10 @@ _this spawn
 	{
 		if (currentWeapon _this isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then
 		{
-			if (behaviour _this == "SAFE") then
+			if ((behaviour _this == "SAFE") OR (behaviour _this == "CARELESS")) then
 			{
 				[_this] call ace_weaponselect_fnc_putWeaponAway;
-				waituntil {sleep 1; (behaviour _this != "SAFE");};
+				waituntil {sleep 1; (behaviour _this != "CARELESS") && (behaviour _this != "SAFE")};
 				_this selectWeapon handgunWeapon _this;
 			};
 		};
