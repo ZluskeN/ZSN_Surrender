@@ -6,7 +6,7 @@ _this spawn
 	_ms = side _this;
 	_this addItem "ACE_CableTie";
 	if (_this in playableunits) exitwith {};
-	waituntil {sleep 1; _this knowsAbout (_this findNearestEnemy getpos _this) >= 1.5;};
+	waituntil {sleep random 1; _this knowsAbout (_this findNearestEnemy getpos _this) >= 1.5;};
 	while {alive _this} do
 	{
 		if (fleeing _this) then
@@ -15,11 +15,11 @@ _this spawn
 			{
 				if (!(isNull objectParent _this)) then {unassignVehicle _this;};
 				[_this, true] call ace_captives_fnc_setSurrendered;
-				waituntil {sleep 0.5; _ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2;};
+				waituntil {sleep random 1; _ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2;};
 				[_this, false] call ace_captives_fnc_setSurrendered;
 			};
 		};
-		sleep 0.5;
+		sleep random 1;
 	};
 };
 _this spawn
@@ -34,10 +34,10 @@ _this spawn
 			if ((behaviour _this == "SAFE") OR (behaviour _this == "CARELESS")) then
 			{
 				[_this] call ace_weaponselect_fnc_putWeaponAway;
-				waituntil {sleep 1; (behaviour _this != "CARELESS") && (behaviour _this != "SAFE")};
+				waituntil {sleep random 1; (behaviour _this != "CARELESS") && (behaviour _this != "SAFE")};
 				_this selectWeapon handgunWeapon _this;
 			};
 		};
-		sleep 1;
+		sleep random 1;
 	};
 };
