@@ -6,9 +6,9 @@ _this spawn
 	_ms = side _this;
 	_this addItem "ACE_CableTie";
 	if (_this in playableunits) exitwith {};
-	waituntil {sleep 1; _this knowsAbout (_this findNearestEnemy getpos _this) > 1.5;};
+	waituntil {sleep random 1; _this knowsAbout (_this findNearestEnemy getpos _this) > 1.5;};
 	if (isNil "cc") then {cc = 0};
-	waituntil {sleep 1; cc <= 48;};
+	waituntil {sleep random 1; cc < 48;};
 	cc = cc + 1;
 	publicVariable "cc";
 	while {alive _this} do
