@@ -6,11 +6,12 @@ _this spawn
 	_ms = side _this;
 	_this addItem "ACE_CableTie";
 	if (_this in playableunits) exitwith {};
-	waituntil {sleep random 1; _this knowsAbout (_this findNearestEnemy getpos _this) > 1.5;};
+	waituntil {sleep random 1; _this knowsAbout (_this findNearestEnemy getpos _this) == 4;};
 	if (isNil "cc") then {cc = 0};
-	waituntil {sleep random 1; cc < 48;};
+	waituntil {sleep random 1; cc < 36;};
 	cc = cc + 1;
 	publicVariable "cc";
+	//hint format ["%1", cc];
 	while {alive _this} do
 	{
 		if (fleeing _this) then
@@ -19,7 +20,7 @@ _this spawn
 			{
 				if (!(isNull objectParent _this)) then {unassignVehicle _this;};
 				[_this, true] call ace_captives_fnc_setSurrendered;
-				waituntil {sleep random 1; _ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2;};
+				waituntil {sleep random 1; ((_ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2) OR (!(alive _this)));};
 				[_this, false] call ace_captives_fnc_setSurrendered;
 			};
 		};
@@ -27,6 +28,7 @@ _this spawn
 	};
 	cc = cc - 1;
 	publicvariable "cc";
+	//hint format ["%1", cc];
 };
 _this spawn
 {
