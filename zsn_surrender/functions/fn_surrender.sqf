@@ -1,25 +1,27 @@
 if (isserver) then {
-	private ["_this", "_ms"];
-	_this = _this select 0;
-	_ms = side _this;
-	_this setUnitPosWeak "UP";
-	_this seCombatMode "WHITE";
-	_this addItem "ACE_CableTie";
-	if (_this in playableunits) exitwith {};
-	_this spawn {
-		waituntil {sleep random 1; _this knowsAbout (_this findNearestEnemy getpos _this) == 4;};
+	private ["_unit"];
+	_unit = _this select 0;
+	_unit addItem "ACE_CableTie";
+	if (_unit in playableunits) exitwith {};
+	_unit setUnitPosWeak "UP";
+	_unit setCombatMode "WHITE";
+	_unit spawn {
+		private ["_unit", "_ms"];
+		_unit = _this;
+		_ms = side _unit;
+		waituntil {sleep random 1; _unit knowsAbout (_unit findNearestEnemy getpos _unit) == 4;};
 		if (isNil "cc") then {cc = 0};
 		waituntil {sleep random 1; cc < 36;};
 		cc = cc + 1;
 		publicVariable "cc";
 		//hint format ["%1", cc];
-		while {alive _this} do {
-			if (fleeing _this) then {
-				if(_ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] < 2) then {
-					if (!(isNull objectParent _this)) then {unassignVehicle _this;};
-					[_this, true] call ace_captives_fnc_setSurrendered;
-					waituntil {sleep random 1; ((_ms countSide nearestObjects [getpos _this, ["AllVehicles"], (getpos (_this findNearestEnemy getpos _this)) distance (getpos _this)] >= 2) OR (!(alive _this)));};
-					[_this, false] call ace_captives_fnc_setSurrendered;
+		while {alive _unit} do {
+			if (fleeing _unit) then {
+				if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
+					if (!(isNull objectParent _unit)) then {unassignVehicle _unit;};
+					[_unit, true] call ace_captives_fnc_setSurrendered;
+					waituntil {sleep random 1; ((_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] >= 2) OR (!(alive _unit)));};
+					[_unit, false] call ace_captives_fnc_setSurrendered;
 				};
 			};
 			sleep random 1;
@@ -28,13 +30,15 @@ if (isserver) then {
 		publicvariable "cc";
 		//hint format ["%1", cc];
 	};
-	_this spawn {
-		while {alive _this} do {
-			if (currentWeapon _this isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then {
-				if ((behaviour _this == "SAFE") OR (behaviour _this == "CARELESS")) then {
-					[_this] call ace_weaponselect_fnc_putWeaponAway;
-					waituntil {sleep random 1; (behaviour _this != "CARELESS") && (behaviour _this != "SAFE")};
-					_this selectWeapon handgunWeapon _this;
+	_unit spawn {
+		private ["_unit"];
+		_unit = _this;
+		while {alive _unit} do {
+			if (currentWeapon _unit isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then {
+				if ((behaviour _unit == "SAFE") OR (behaviour _unit == "CARELESS")) then {
+					[_unit] call ace_weaponselect_fnc_putWeaponAway;
+					waituntil {sleep random 1; (behaviour _unit != "CARELESS") && (behaviour _unit != "SAFE")};
+					_unit selectWeapon handgunWeapon _unit;
 				};
 			};
 			sleep random 1;
