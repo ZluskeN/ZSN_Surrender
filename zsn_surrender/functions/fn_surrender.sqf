@@ -4,13 +4,44 @@ if (isserver) then {
 	_unit addItem "ACE_CableTie";
 	_unit setUnitPosWeak "UP";
 	_unit setCombatMode "WHITE";
+	_unit addEventHandler["Dammaged",{
+		[_this select 0, _this select 1, _this select 2] spawn {
+			private ["_unit","_part","_dmg","_ms"];
+			_unit=_this select 0;
+			_part=_this select 1;
+			_dmg=_this select 2;
+			_ms = side _unit;
+			//hint format ["%1, %2", _part, _dmg];
+			if (_dmg > 0.5) then {
+				if (!(_unit getVariable "ACE_isUnconscious")) then {
+					if (!(_unit in ([] call CBA_fnc_players))) then {
+						if (isNull objectParent _unit) then {
+							_unit spawn {
+								private ["_unit"];
+								_unit = _this;
+								_unit setvariable ["ACE_isUnconscious", true, true];
+								sleep random 3;
+								[_unit,true] remoteExec ["setCaptive",_unit];
+								[_unit,true] remoteExec ["setUnconscious",_unit];
+								waituntil {sleep random 3; (([_unit] call ACE_medical_fnc_isInStableCondition) OR (lifestate _unit != "INCAPACITATED"));};
+								[_unit,false] remoteExec ["setUnconscious",_unit];
+								[_unit, false] call ace_medical_fnc_setUnconscious;
+								if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {[_unit, true] call ace_captives_fnc_setSurrendered;} else {[_unit,false] remoteExec ["setCaptive",_unit];};
+							};
+							if (_part isEqualTo "") then {damage _unit} else {_unit getHit _part};
+						};
+					};
+				};
+			};
+		};
+	}];
 	_unit spawn {
 		private ["_unit", "_ms"];
 		_unit = _this;
 		_ms = side _unit;
-		waituntil {sleep random 1; _unit knowsAbout (_unit findNearestEnemy getpos _unit) == 4;};
+		waituntil {sleep random 3; _unit knowsAbout (_unit findNearestEnemy getpos _unit) == 4;};
 		if (isNil "cc") then {cc = 0};
-		waituntil {sleep random 1; cc < 36;};
+		waituntil {sleep random 3; cc < 24;};
 		cc = cc + 1;
 		publicVariable "cc";
 		//hint format ["%1", cc];
@@ -20,12 +51,12 @@ if (isserver) then {
 					if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
 						if (!(isNull objectParent _unit)) then {unassignVehicle _unit;};
 						[_unit, true] call ace_captives_fnc_setSurrendered;
-						waituntil {sleep random 1; ((_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] >= 2) OR (!(alive _unit)));};
+						waituntil {sleep random 3; ((_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] >= 2) OR (!(alive _unit)));};
 						[_unit, false] call ace_captives_fnc_setSurrendered;
 					};
 				};
 			};
-			sleep random 1;
+			sleep random 3;
 		};
 		cc = cc - 1;
 		publicvariable "cc";
@@ -39,12 +70,12 @@ if (isserver) then {
 				if (currentWeapon _unit isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then {
 					if ((behaviour _unit == "SAFE") OR (behaviour _unit == "CARELESS")) then {
 						[_unit] call ace_weaponselect_fnc_putWeaponAway;
-						waituntil {sleep random 1; (behaviour _unit != "CARELESS") && (behaviour _unit != "SAFE")};
+						waituntil {sleep random 3; (behaviour _unit != "CARELESS") && (behaviour _unit != "SAFE")};
 						_unit selectWeapon handgunWeapon _unit;
 					};
 				};
 			};
-			sleep random 1;
+			sleep random 3;
 		};
 	};
 };

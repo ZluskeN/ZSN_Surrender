@@ -45,6 +45,10 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_surrender.sqf";
 			};
+			class addarsenal
+			{
+				file = "\zsn_surrender\functions\fn_addarsenal.sqf";
+			};
 		};
 	};
 };
