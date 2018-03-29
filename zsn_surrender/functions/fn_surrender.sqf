@@ -4,31 +4,31 @@ if (isserver) then {
 	_unit addItem "ACE_CableTie";
 	_unit setUnitPosWeak "UP";
 	_unit setCombatMode "WHITE";
-	_unit addEventHandler["Dammaged",{
+	_unit addEventHandler["HandleDamage",{
 		[_this select 0, _this select 1, _this select 2] spawn {
-			private ["_unit","_part","_dmg","_ms"];
+			private ["_unit","_part","_dmg"];
 			_unit=_this select 0;
 			_part=_this select 1;
 			_dmg=_this select 2;
-			_ms = side _unit;
 			//hint format ["%1, %2", _part, _dmg];
-			if (_dmg > 0.5) then {
-				if (!(_unit getVariable "ACE_isUnconscious")) then {
-					if (!(_unit in ([] call CBA_fnc_players))) then {
-						if (isNull objectParent _unit) then {
+			if (_part in ["","pelvis","spine1","spine2","spine3","body"] || _dmg > 0.5) then {
+				if (!(_unit in ([] call CBA_fnc_players))) then {
+					if (isNull objectParent _unit) then {
+						if (!(_unit getVariable "ACE_isUnconscious")) then {
 							_unit spawn {
-								private ["_unit"];
+								private ["_unit","_ms"];
 								_unit = _this;
-								_unit setvariable ["ACE_isUnconscious", true, true];
+								_ms = side _unit;
 								sleep random 3;
-								[_unit,true] remoteExec ["setCaptive",_unit];
-								[_unit,true] remoteExec ["setUnconscious",_unit];
+								_unit setCaptive true;
+								_unit setvariable ["ACE_isUnconscious", true, true];
+								_unit setUnconscious true;
 								waituntil {sleep random 3; (([_unit] call ACE_medical_fnc_isInStableCondition) OR (lifestate _unit != "INCAPACITATED"));};
-								[_unit,false] remoteExec ["setUnconscious",_unit];
+								_unit setUnconscious false;
 								[_unit, false] call ace_medical_fnc_setUnconscious;
-								if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {[_unit, true] call ace_captives_fnc_setSurrendered;} else {[_unit,false] remoteExec ["setCaptive",_unit];};
+								if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {[_unit, true] call ace_captives_fnc_setSurrendered;} else {_unit setCaptive false;};
 							};
-							if (_part isEqualTo "") then {damage _unit} else {_unit getHit _part};
+							0	
 						};
 					};
 				};
@@ -41,7 +41,7 @@ if (isserver) then {
 		_ms = side _unit;
 		waituntil {sleep random 3; _unit knowsAbout (_unit findNearestEnemy getpos _unit) == 4;};
 		if (isNil "cc") then {cc = 0};
-		waituntil {sleep random 3; cc < 24;};
+		waituntil {sleep random 3; cc < 32;};
 		cc = cc + 1;
 		publicVariable "cc";
 		//hint format ["%1", cc];
