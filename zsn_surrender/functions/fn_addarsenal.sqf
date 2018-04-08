@@ -5,10 +5,10 @@ params [
 ];
 ["AmmoboxInit",[_box,false]] spawn BIS_fnc_arsenal;
 _ua = [];
-{
-	if ((configName _x) isKindoF "CAManBase") then { 
-		_ua pushback (configName _x); 
-	}; 
+	{
+	if ((configName _x) isKindoF "CAManBase") then {
+		_ua pushback (configName _x);
+	};
 } forEach ("getText (_x >> 'faction') == _fact" configClasses (configfile >> "CfgVehicles"));
 _ra = _ua arrayintersect _ea;
 if ((count _ra) > 0) then {_ua = _ua - _ra} else {_ua append _ea};

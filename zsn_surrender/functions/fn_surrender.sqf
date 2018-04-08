@@ -11,7 +11,7 @@ if (isserver) then {
 			_part=_this select 1;
 			_dmg=_this select 2;
 			//hint format ["%1, %2", _part, _dmg];
-			if (_part in ["","pelvis","spine1","spine2","spine3","body"] || _dmg > 0.5) then {
+			if (random 1 < _dmg) then {
 				if (!(_unit in ([] call CBA_fnc_players))) then {
 					if (isNull objectParent _unit) then {
 						if (!(_unit getVariable "ACE_isUnconscious")) then {
@@ -28,7 +28,7 @@ if (isserver) then {
 								[_unit, false] call ace_medical_fnc_setUnconscious;
 								if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {[_unit, true] call ace_captives_fnc_setSurrendered;} else {_unit setCaptive false;};
 							};
-							0	
+							0
 						};
 					};
 				};
