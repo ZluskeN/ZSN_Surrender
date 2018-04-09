@@ -11,8 +11,7 @@ publicVariable "zsn_pvp";
 rd = (getMissionConfigValue ["respawnDelay",2]) + 1;
 switch (_zsn_side) do {
 	case east: {
-		if (!isNil ("respawn_east")) then {deleteMarker respawn_east;};
-		respawn_east = createMarker ["respawn_east", [100,0]];
+		if (isNil ("respawn_east")) then {respawn_east = createMarker ["respawn_east", [100,0]];};
 		zsn_ofe = 0;
 		publicVariable "zsn_ofe";
 		zsn_loe = _zsn_lo;
@@ -36,8 +35,7 @@ switch (_zsn_side) do {
       		zsn_eft setTriggerStatements ["isServer && {alive _x && Side _x == east} count (allPlayers - entities 'HeadlessClient_F') < 1 && {Side _x == civilian} count thislist >= 1", "[zsn_rse, thisList] call zsn_fnc_allplayersdead;",""];
 	};
 	case west: {
-		if (!isNil ("respawn_west")) then {deleteMarker respawn_west;};
-		respawn_west = createMarker ["respawn_west", [0,100]];
+		if (isNil ("respawn_west")) then {respawn_west = createMarker ["respawn_west", [0,100]];};
 		zsn_ofw = 0;
 		publicVariable "zsn_ofw";
 		zsn_low = _zsn_lo;
@@ -61,8 +59,7 @@ switch (_zsn_side) do {
        		zsn_wft setTriggerStatements ["isServer && {alive _x && Side _x == west} count (allPlayers - entities 'HeadlessClient_F') < 1 && {Side _x == civilian} count thislist >= 1", "[zsn_rsw, thisList] call zsn_fnc_allplayersdead;",""];
 	};
 	case resistance: {
-		if (!isNil ("respawn_guerrila")) then {deleteMarker respawn_guerrila;};
-		respawn_guerrila = createMarker ["respawn_guerrila", [0,0]];
+		if (!isNil ("respawn_guerrila")) then {respawn_guerrila = createMarker ["respawn_guerrila", [0,0]];};
 		zsn_ofg = 0;
 		publicVariable "zsn_ofg";
 		zsn_log = _zsn_lo;
