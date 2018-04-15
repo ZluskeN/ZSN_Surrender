@@ -26,7 +26,7 @@ if (isserver) then {
 								waituntil {sleep random 3; (([_unit] call ACE_medical_fnc_isInStableCondition) OR (lifestate _unit != "INCAPACITATED"));};
 								_unit setUnconscious false;
 								[_unit, false] call ace_medical_fnc_setUnconscious;
-								if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {[_unit, true] call ace_captives_fnc_setSurrendered;} else {_unit setCaptive false;};
+								if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 1) then {[_unit, true] call ace_captives_fnc_setSurrendered;} else {_unit setCaptive false;};
 							};
 							0
 						};
@@ -51,7 +51,7 @@ if (isserver) then {
 					if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
 						if (!(isNull objectParent _unit)) then {unassignVehicle _unit;};
 						[_unit, true] call ace_captives_fnc_setSurrendered;
-						waituntil {sleep random 3; ((_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] >= 2) OR (!(alive _unit)));};
+						waituntil {sleep random 3; ((_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] > 1) OR (!(alive _unit)));};
 						[_unit, false] call ace_captives_fnc_setSurrendered;
 					};
 				};
