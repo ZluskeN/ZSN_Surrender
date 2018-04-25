@@ -1,4 +1,3 @@
-
 class CfgPatches
 {
 	class zsn_surrender
@@ -15,7 +14,7 @@ class Extended_Init_EventHandlers
 	{
         	class zsn_surrender_init
 		{
-            		init = "_this call zsn_fnc_surrender";
+            		init = "_this spawn zsn_fnc_surrender";
         	};
 	};
 };
@@ -30,7 +29,7 @@ class cfgvehicles
 	{
 		class EventHandlers
 		{
-			init = "_this call bis_fnc_moduleInit;";
+			init = "_this spawn bis_fnc_moduleInit;";
 			curatorobjectplaced = "[_this select 1] call zsn_fnc_surrender";
 		};
 	};
