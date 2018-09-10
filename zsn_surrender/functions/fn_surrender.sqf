@@ -13,7 +13,7 @@ if (isserver) then {
 			addMissionEventHandler ["PlayerDisconnected",{
 				zsn_pa = [] call CBA_fnc_players;
 			}];
-			[[{lifestate _this != "INCAPACITATED";}]] call ace_medical_fnc_addUnconsciousCondition;
+//			[[{lifestate _this != "INCAPACITATED";}]] call ace_medical_fnc_addUnconsciousCondition;
 		};
 		_unit addEventHandler["HandleDamage",{
 			[_this select 0, _this select 1, _this select 2] spawn {
