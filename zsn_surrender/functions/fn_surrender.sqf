@@ -13,7 +13,6 @@ if (isserver) then {
 			addMissionEventHandler ["PlayerDisconnected",{
 				zsn_pa = [] call CBA_fnc_players;
 			}];
-//			[[{lifestate _this != "INCAPACITATED";}]] call ace_medical_fnc_addUnconsciousCondition;
 		};
 		_unit addEventHandler["HandleDamage",{
 			[_this select 0, _this select 1, _this select 2] spawn {
@@ -50,7 +49,7 @@ if (isserver) then {
 			private ["_unit", "_ms"];
 			_unit = _this;
 			_ms = side _unit;
-			waituntil {sleep random 3; _unit knowsAbout (_unit findNearestEnemy getpos _unit) == 4;};
+			waituntil {sleep random 3; _unit call BIS_fnc_enemyDetected;};
 			if (isNil "cc") then {cc = 0};
 			waituntil {sleep random 3; cc < 32;};
 			cc = cc + 1;
