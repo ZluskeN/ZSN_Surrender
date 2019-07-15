@@ -16,6 +16,13 @@ class CfgPatches
 		requiredVersion = 1;
 		requiredAddons[] = {"ace_common"};
 	};
+	class zsn_squat
+	{
+		units[] = {};
+		weapons[] = {};
+		requiredVersion = 1;
+		requiredAddons[] = {};
+	};
 };
 class Extended_InitPost_EventHandlers
 {
@@ -23,7 +30,7 @@ class Extended_InitPost_EventHandlers
 	{
 		class zsn_surrender_init
 		{
-			init = "_this spawn zsn_fnc_surrender";
+			init = "_this call zsn_fnc_surrender";
 		};
 	};
 };

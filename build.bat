@@ -34,3 +34,4 @@ if defined DSSIGNFILEPATH (
 
 REM Remove drive mapping
 subst p: /d
+pause
