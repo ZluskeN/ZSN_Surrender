@@ -13,8 +13,7 @@ if (isserver) then {
 	if (isNil "cc") then {cc = []};
 	publicVariable "cc";
 	if (_unit isKindOf "CAManBase") then {
-		_unit setUnitPosWeak "UP";
-		_unit setCombatMode "WHITE";
+		_unit addItem "ACE_CableTie";
 		_unit addEventHandler["HandleDamage",{
 			[_this select 0, _this select 1, _this select 2] call {
 				private ["_unit","_part","_dmg"];
@@ -46,7 +45,6 @@ if (isserver) then {
 				if (_part isEqualTo "") then {damage _unit} else {_unit getHit _part};
 			};
 		}];
-		_unit addItem "ACE_CableTie";
 		[{(_this) call BIS_fnc_enemyDetected}, {
 			private ["_unit", "_ms"];
 			_unit = _this;
@@ -55,7 +53,7 @@ if (isserver) then {
 				private ["_unit", "_ms"];
 				_unit = _this select 0;
 				_ms = _this select 1;
-				waituntil {sleep random 3; cc < 32 && !(_unit in cc);};
+				waituntil {sleep random 3; ((count cc < 32) && (!(_unit in cc)));};
 				cc pushback _unit;
 				publicVariable "cc";
 				while {alive _unit} do {
@@ -64,14 +62,14 @@ if (isserver) then {
 							if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
 								if (!(isNull objectParent _unit)) then {unassignVehicle _unit;};
 								[_unit, true] call ace_captives_fnc_setSurrendered;
-								waituntil (sleep random 3; (_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] > 1) OR (!(alive _unit)););
+								waituntil {sleep random 3; ((_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] > 1) OR (!(alive _unit)));};
 								[_unit, false] call ace_captives_fnc_setSurrendered;
 							};
 						};
 					};
 					sleep random 3;
 				};
-				cc = cc - _unit;
+				cc = cc - [_unit];
 				publicvariable "cc";
 			};
 		}, _unit] call CBA_fnc_waitUntilAndExecute;
@@ -83,7 +81,7 @@ if (isserver) then {
 					if (currentWeapon _unit isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then {
 						if ((behaviour _unit == "SAFE") OR (behaviour _unit == "CARELESS")) then {
 							[_unit] call ace_weaponselect_fnc_putWeaponAway;
-							waituntil {sleep random 3; (behaviour _unit != "CARELESS") && (behaviour _unit != "SAFE")};
+							waituntil {sleep random 3; ((behaviour _unit != "CARELESS") && (behaviour _unit != "SAFE"));};
 							_unit selectWeapon handgunWeapon _unit;
 						};
 					};
@@ -91,5 +89,7 @@ if (isserver) then {
 				sleep random 3;
 			};
 		};
+		_unit setUnitPosWeak "UP";
+		_unit setCombatMode "WHITE";
 	};
 };
