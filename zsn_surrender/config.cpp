@@ -28,9 +28,9 @@ class Extended_InitPost_EventHandlers
 {
 	class CAManBase
 	{
-		class zsn_surrender_init
+		class zsn_surrenderInit
 		{
-			init = "_this call zsn_fnc_surrender";
+			init = "_this call zsn_fnc_surrenderInit";
 		};
 	};
 };
@@ -46,7 +46,7 @@ class cfgvehicles
 		class EventHandlers
 		{
 			init = "_this call bis_fnc_moduleInit;";
-			curatorobjectplaced = "[_this select 1] call zsn_fnc_surrender";
+			curatorobjectplaced = "[_this select 1] call zsn_fnc_surrenderInit";
 		};
 	};
 };
@@ -56,9 +56,17 @@ class CfgFunctions
 	{
 		class Functions
 		{
-			class surrender
+			class surrenderInit
 			{
-				file = "\zsn_surrender\functions\fn_surrender.sqf";
+				file = "\zsn_surrender\functions\fn_surrender_init.sqf";
+			};
+			class surrenderCycle
+			{
+				file = "\zsn_surrender\functions\fn_surrender_cycle.sqf";
+			};
+			class Hint
+			{
+				file = "\zsn_surrender\functions\fn_hint.sqf";
 			};
 		};
 	};
