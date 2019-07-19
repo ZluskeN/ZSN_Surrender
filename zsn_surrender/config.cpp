@@ -1,12 +1,12 @@
 ////////////////////////////////////////////////////////////////////
-//DeRap: Produced from mikero's Dos Tools Dll version 5.66
-//'now' is Fri May 18 21:57:49 2018 : 'file' last modified on Thu May 17 21:49:21 2018
+//DeRap: zsn_surrender\config.bin
+//Produced from mikero's Dos Tools Dll version 6.44
+//'now' is Fri Jul 19 11:27:09 2019 : 'file' last modified on Fri Jul 19 11:23:09 2019
 //http://dev-heaven.net/projects/list_files/mikero-pbodll
 ////////////////////////////////////////////////////////////////////
 
 #define _ARMA_
 
-//Class zsn_surrender : config.bin{
 class CfgPatches
 {
 	class zsn_surrender
@@ -60,6 +60,10 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_surrender_init.sqf";
 			};
+			class WoundedEvent
+			{
+				file = "\zsn_surrender\functions\fn_wounded_event.sqf";
+			};
 			class surrenderCycle
 			{
 				file = "\zsn_surrender\functions\fn_surrender_cycle.sqf";
@@ -71,4 +75,3 @@ class CfgFunctions
 		};
 	};
 };
-//};

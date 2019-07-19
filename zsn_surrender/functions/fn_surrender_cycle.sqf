@@ -8,4 +8,5 @@ sleep _time;
 private _wh = nearestObjects [_unit, ["WeaponHolder", "WeaponHolderSimulated"], 50];
 private _containers = [];
 {if (count (weaponcargo _x) > 0) then {_containers pushback _x};} forEach _wh;
+[((weaponcargo (_containers select 0)) select 0), (_containers select 0)] remoteexec ["zsn_fnc_hint"];
 if (count _containers > 0) then {_unit action ["TakeWeapon", (_containers select 0), ((weaponcargo (_containers select 0)) select 0)];};
