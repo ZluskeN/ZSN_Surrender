@@ -60,13 +60,13 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_surrender_init.sqf";
 			};
-			class WoundedEvent
-			{
-				file = "\zsn_surrender\functions\fn_wounded_event.sqf";
-			};
 			class surrenderCycle
 			{
 				file = "\zsn_surrender\functions\fn_surrender_cycle.sqf";
+			};
+			class Dammage
+			{
+				file = "\zsn_surrender\functions\fn_dammage.sqf";
 			};
 			class Hint
 			{

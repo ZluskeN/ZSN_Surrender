@@ -1,4 +1,4 @@
-if (isserver) then {
+if (isServer) then {
 	params ["_unit"];
 	if (isnil "zsn_pa") then {
 		zsn_pa = [] call CBA_fnc_players;
@@ -15,34 +15,38 @@ if (isserver) then {
 	publicVariable "cc";
 	if (_unit isKindOf "CAManBase") then {
 		_unit addItem "ACE_CableTie";
+		_unit setvariable ["ZSN_Dammage", 0, true];
+		_unit setvariable ["ZSN_isUnconscious", false, true];
+		_unit setvariable ["ZSN_isSurrendering", false, true];
 		[{(_this) call BIS_fnc_enemyDetected}, {
 			private ["_unit", "_ms"];
 			_unit = _this;
 			_ms = side _unit;
-			[_unit, _ms] spawn {
-				private ["_unit", "_ms","_time"];
-				_unit = _this select 0;
-				_ms = _this select 1;
-				_time = random 3;
-				waituntil {sleep _time; ((count cc < 32) && (!(_unit in cc)));};
-				cc pushback _unit;
-				publicVariable "cc";
-				[count cc, cc] remoteexec ["zsn_fnc_hint"];
-				while {alive _unit} do {
-					if (!(_unit in zsn_pa)) then {
-						if (fleeing _unit) then {
+			if (!(_unit in zsn_pa)) then {
+				[_unit, _ms] spawn {
+					private ["_unit", "_ms","_time"];
+					_unit = _this select 0;
+					_ms = _this select 1;
+					_time = random 3;
+					waituntil {sleep _time; ((count cc < 32) && (!(_unit in cc)));};
+					cc pushback _unit;
+					publicVariable "cc";
+					[count cc, cc] remoteexec ["zsn_fnc_hint"];
+					while {alive _unit} do {
+						if (!(_unit getVariable "ZSN_isSurrendering")) then {
 							if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
-								if (!(isNull objectParent _unit)) then {unassignVehicle _unit;};
-								[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
-								[_unit, "Surrendered"] remoteexec ["zsn_fnc_hint"];
+								if (fleeing _unit) then {
+									if (!(isNull objectParent _unit)) then {unassignVehicle _unit;};
+									[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
+								};
 							};
 						};
+						sleep _time;
 					};
-					sleep _time;
+					cc = cc - [_unit];
+					publicvariable "cc";
+					[count cc, cc] remoteexec ["zsn_fnc_hint"];
 				};
-				cc = cc - [_unit];
-				publicvariable "cc";
-				[count cc, cc] remoteexec ["zsn_fnc_hint"];
 			};
 		}, _unit] call CBA_fnc_waitUntilAndExecute;
 		_unit setUnitPosWeak "UP";
@@ -64,14 +68,6 @@ if (isserver) then {
 				};
 			};
 		};
-		_unit addEventHandler["FiredMan", {
-			_unit = _this select 0; // Get the unit who fired
-			_numOfBullets = (weaponState _unit) select 4; // Get the amount of bullets left in the magazine
-			if (_numOfBullets isEqualTo 0) then {
-				if (((getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)) < 50) then {
-					_unit selectWeapon handgunWeapon _unit;
-				};
-			};
-		}];
+		_unit call ZSN_fnc_Dammage;
 	};
 };
