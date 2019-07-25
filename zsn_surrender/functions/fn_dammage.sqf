@@ -22,11 +22,11 @@ _unit addEventHandler["HandleDamage",{
 							sleep _time;
 							if (alive _unit) then {
 								if (!(_unit getVariable "ZSN_isUnconscious")) then {
-									[_unit, "Went down"] remoteexec ["zsn_fnc_hint"];
-									_unit setCaptive true;
 									_unit setvariable ["ZSN_isUnconscious", true, true];
+									_unit setCaptive true;
 									_unit setUnconscious true;
-									[_unit] join grpNull;
+									[_unit] joinsilent grpNull;
+									[_unit, "Went down"] remoteexec ["zsn_fnc_hint"];
 									while {(_unit getVariable "ZSN_Dammage" > 0.25) && (lifestate _unit == "INCAPACITATED")} do {
 										sleep _time;
 										_unit setSuppression 1;
@@ -43,7 +43,7 @@ _unit addEventHandler["HandleDamage",{
 										} else {
 											_unit setCaptive false;
 											_unit setSuppression 0;
-											[_unit] join _grp;
+											[_unit] joinsilent _grp;
 										};
 									};
 								};
