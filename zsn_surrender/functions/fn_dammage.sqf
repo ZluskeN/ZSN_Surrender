@@ -10,40 +10,47 @@ _unit addEventHandler["HandleDamage",{
 			if (random 1 < _dmg) then {
 				if (!(_unit in zsn_pa)) then {
 					if (isNull objectParent _unit) then {
-						[_unit, _ms] spawn {
-							private ["_unit","_ms","_time","_dmg","_hpa","_grp"];
-							_unit = _this select 0;
-							_ms = _this select 1;
-							_time = random 3;
-							_hpa = getAllHitPointsDamage _unit select 2;
-							_dmg = selectMax _hpa;
-							_grp = group _unit;
-							_unit setvariable ["ZSN_Dammage", _dmg, true];
-							sleep _time;
+						if (!(_unit getVariable "ZSN_isUnconscious")) then {
 							if (alive _unit) then {
-								if (!(_unit getVariable "ZSN_isUnconscious")) then {
-									_unit setvariable ["ZSN_isUnconscious", true, true];
+								_unit setvariable ["ZSN_isUnconscious", true, true];
+								[_unit, _ms] spawn {
+									private ["_unit","_ms","_time","_dmg","_hpa","_grp"];
+									_unit = _this select 0;
+									_ms = _this select 1;
+									_time = random 3;
+									_hpa = getAllHitPointsDamage _unit select 2;
+									_dmg = selectMax _hpa;
+									_grp = group _unit;
+									_unit setvariable ["ZSN_Dammage", _dmg, true];
+									_unit setSuppression 1;
 									_unit setCaptive true;
 									_unit setUnconscious true;
-									[_unit] joinsilent grpNull;
 									[_unit, "Went down"] remoteexec ["zsn_fnc_hint"];
 									while {(_unit getVariable "ZSN_Dammage" > 0.25) && (lifestate _unit == "INCAPACITATED")} do {
-										sleep _time;
+										[_unit] joinsilent grpNull;
 										_unit setSuppression 1;
 										_hpa = getAllHitPointsDamage _unit select 2;
 										_dmg = selectMax _hpa;
 										_unit setvariable ["ZSN_Dammage", _dmg, true];
+										sleep _time;
 									};
 									if (!alive _unit) exitWith {};
+									sleep _time;
 									_unit setUnconscious false;
 									_unit setvariable ["ZSN_isUnconscious", false, true];
 									if (!(_unit getVariable "ZSN_isSurrendering")) then {
-										if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 1) then {
+										if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
 											[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
 										} else {
-											_unit setCaptive false;
+											sleep _time;
 											_unit setSuppression 0;
+											private _friendlies = [];
+											{if (side _x == _ms) then {_friendlies pushback _x;};} foreach nearestObjects [getpos _unit, ["AllVehicles"], 50];
+											_friendlies = [_friendlies, [], {_unit distance _x}, "ASCEND"] call BIS_fnc_sortBy;
+											_grp = group (_friendlies select 0);
 											[_unit] joinsilent _grp;
+											["joined", _grp] remoteexec ["zsn_fnc_hint"];
+											_unit setCaptive false;
 										};
 									};
 								};
@@ -59,24 +66,31 @@ _unit addEventHandler["HandleDamage",{
 	};
 }];
 if (_unit getUnitTrait "Medic") then {
-	_unit spawn {
-		private ["_unit", "_healQueue","_time","_patient"];
-		_unit = _this;
-		_healQueue = [];
-		_time = random 3;
-		while {alive _unit} do {
-			sleep _time;
-			{if ((lifestate _x == "INCAPACITATED") && !(_x in _healQueue)) then {_healQueue pushback _x};} foreach nearestObjects [_unit, ["CAManBase"], 50];
-			if (count _healQueue > 0) then {
-				_healQueue = [_healQueue, [], {_unit distance _x}, "ASCEND"] call BIS_fnc_sortBy;
-				_patient = _healQueue select 0;
-				_unit doMove getpos _patient;
-				if (_unit distance _patient < 2) then {
-					_unit additem "FirstAidKit";
-					_unit action ["HealSoldier", _patient];
-					_healQueue deleteAt 0;
+	if (!(_unit in zsn_pa)) then {
+		_unit spawn {
+			private ["_unit", "_healQueue","_healQueueTemp","_time","_patient"];
+			_unit = _this;
+			_time = random 3;
+			_healQueue = [];
+			while {alive _unit} do {
+				sleep _time;
+				_healQueueTemp = [];
+				{if (lifestate _x == "INCAPACITATED") then {_healQueueTemp pushback _x;};} foreach nearestObjects [_unit, ["CAManBase"], 100];
+				_healQueueTemp = [_healQueueTemp, [], {_unit distance _x}, "ASCEND"] call BIS_fnc_sortBy;
+				if (count _healQueueTemp > 0) then {
+					_patient = _healQueueTemp select 0;
+					if (!(_healQueueTemp  isEqualTo _healQueue)) then {
+						_healQueue = _HealQueueTemp;
+						_unit doMove getpos _patient;
+						[_unit, _healQueue] remoteexec ["zsn_fnc_hint"];
+					} else {
+						if (_unit distance _patient < 5) then {
+							_unit additem "FirstAidKit";
+							_unit action ["HealSoldier", _patient];
+							_healQueue deleteAt 0;
+						};
+					};
 				};
-				[_unit, _healQueue] remoteexec ["zsn_fnc_hint"];
 			};
 		};
 	};

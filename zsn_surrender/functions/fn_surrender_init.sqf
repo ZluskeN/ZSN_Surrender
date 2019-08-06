@@ -14,7 +14,6 @@ if (isServer) then {
 	if (isNil "cc") then {cc = []};
 	publicVariable "cc";
 	if (_unit isKindOf "CAManBase") then {
-		_unit addItem "ACE_CableTie";
 		_unit setvariable ["ZSN_Dammage", 0, true];
 		_unit setvariable ["ZSN_isUnconscious", false, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
@@ -47,20 +46,23 @@ if (isServer) then {
 		};
 		_unit setUnitPosWeak "UP";
 		_unit setCombatMode "WHITE";
-		if (currentWeapon _unit isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then {
-			_unit spawn {
-				private ["_unit","_time"];
-				_unit = _this;
-				_time = random 3;
-				while {alive _unit} do {
-					if (!(_unit in zsn_pa)) then {
-						if ((behaviour _unit == "SAFE") OR (behaviour _unit == "CARELESS")) then {
-							[_unit] call ace_weaponselect_fnc_putWeaponAway;
-							waituntil {sleep _time; ((behaviour _unit != "CARELESS") && (behaviour _unit != "SAFE"));};
-							_unit selectWeapon handgunWeapon _unit;
+		if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
+			_unit addItem "ACE_CableTie";
+			if (currentWeapon _unit isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then {
+				_unit spawn {
+					private ["_unit","_time"];
+					_unit = _this;
+					_time = random 3;
+					while {alive _unit} do {
+						if (!(_unit in zsn_pa)) then {
+							if ((behaviour _unit == "SAFE") OR (behaviour _unit == "CARELESS")) then {
+								[_unit] call ace_weaponselect_fnc_putWeaponAway;
+								waituntil {sleep _time; ((behaviour _unit != "CARELESS") && (behaviour _unit != "SAFE"));};
+								_unit selectWeapon handgunWeapon _unit;
+							};
 						};
+						sleep _time;
 					};
-					sleep _time;
 				};
 			};
 		};
