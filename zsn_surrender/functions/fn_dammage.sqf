@@ -5,8 +5,8 @@ _unit addEventHandler["HandleDamage",{
 		_unit = _this select 0;
 		_part = _this select 1;
 		_dmg = _this select 2;
-		_ms = side _unit;
-		if (_dmg > 0.05) then {
+		_ms = (_unit getVariable "ZSN_Side");
+		if (_dmg > 0.1) then {
 			if (random 1 < _dmg) then {
 				if (!(_unit in zsn_pa)) then {
 					if (isNull objectParent _unit) then {
@@ -20,14 +20,13 @@ _unit addEventHandler["HandleDamage",{
 									_time = random 3;
 									_hpa = getAllHitPointsDamage _unit select 2;
 									_dmg = selectMax _hpa;
-									_grp = group _unit;
 									_unit setvariable ["ZSN_Dammage", _dmg, true];
 									_unit setSuppression 1;
 									_unit setCaptive true;
+									[_unit, false, _time] spawn zsn_fnc_recover;
 									_unit setUnconscious true;
 									[_unit, "Went down"] remoteexec ["zsn_fnc_hint"];
 									while {(_unit getVariable "ZSN_Dammage" > 0.25) && (lifestate _unit == "INCAPACITATED")} do {
-										[_unit] joinsilent grpNull;
 										_unit setSuppression 1;
 										_hpa = getAllHitPointsDamage _unit select 2;
 										_dmg = selectMax _hpa;
@@ -40,17 +39,12 @@ _unit addEventHandler["HandleDamage",{
 									_unit setvariable ["ZSN_isUnconscious", false, true];
 									if (!(_unit getVariable "ZSN_isSurrendering")) then {
 										if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
-											[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
+											[_unit, _ms, _time] call zsn_fnc_surrenderCycle;
 										} else {
 											sleep _time;
-											_unit setSuppression 0;
-											private _friendlies = [];
-											{if (side _x == _ms) then {_friendlies pushback _x;};} foreach nearestObjects [getpos _unit, ["AllVehicles"], 50];
-											_friendlies = [_friendlies, [], {_unit distance _x}, "ASCEND"] call BIS_fnc_sortBy;
-											_grp = group (_friendlies select 0);
-											[_unit] joinsilent _grp;
-											["joined", _grp] remoteexec ["zsn_fnc_hint"];
+											[_unit, true, _time] spawn zsn_fnc_recover;
 											_unit setCaptive false;
+											_unit setSuppression 0;
 										};
 									};
 								};
@@ -75,7 +69,7 @@ if (_unit getUnitTrait "Medic") then {
 			while {alive _unit} do {
 				sleep _time;
 				_healQueueTemp = [];
-				{if (lifestate _x == "INCAPACITATED") then {_healQueueTemp pushback _x;};} foreach nearestObjects [_unit, ["CAManBase"], 100];
+				{if ((lifestate _x == "INCAPACITATED") && (_x != _unit)) then {_healQueueTemp pushback _x;};} foreach nearestObjects [_unit, ["CAManBase"], 100];
 				_healQueueTemp = [_healQueueTemp, [], {_unit distance _x}, "ASCEND"] call BIS_fnc_sortBy;
 				if (count _healQueueTemp > 0) then {
 					_patient = _healQueueTemp select 0;

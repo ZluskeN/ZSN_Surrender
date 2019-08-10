@@ -15,12 +15,13 @@ if (isServer) then {
 	publicVariable "cc";
 	if (_unit isKindOf "CAManBase") then {
 		_unit setvariable ["ZSN_Dammage", 0, true];
+		_unit setvariable ["ZSN_Side", side _unit, true];
 		_unit setvariable ["ZSN_isUnconscious", false, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
 		_unit spawn {
 			private ["_unit", "_ms","_time"];
 			_unit = _this;
-			_ms = side _unit;
+			_ms = (_unit getVariable "ZSN_Side");
 			_time = random 3;
 			waituntil {sleep _time; _unit call BIS_fnc_enemyDetected;};
 			if (!(_unit in zsn_pa)) then {
@@ -32,7 +33,7 @@ if (isServer) then {
 					if (fleeing _unit) then {
 						if (!(_unit getVariable "ZSN_isSurrendering")) then {
 							if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
-								if (!(isNull objectParent _unit)) then {unassignVehicle _unit;};
+								if (!(isNull objectParent _unit)) then {doGetOut _unit;};
 								[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
 							};
 						};
@@ -46,6 +47,17 @@ if (isServer) then {
 		};
 		_unit setUnitPosWeak "UP";
 		_unit setCombatMode "WHITE";
+		_unit addEventHandler ["GetOutMan", {
+			params ["_unit", "_role", "_vehicle", "_turret"];
+			if (_vehicle iskindof "Air" && _role != "cargo") then {
+				_unit spawn {
+					params ["_unit"];
+					_unit setcaptive true;
+					waituntil {getpos _unit select 2 < 2};
+					_unit setcaptive false;
+				};
+			};
+		}];
 		if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
 			_unit addItem "ACE_CableTie";
 			if (currentWeapon _unit isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then {

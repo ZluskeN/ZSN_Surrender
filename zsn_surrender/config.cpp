@@ -64,6 +64,10 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_surrender_cycle.sqf";
 			};
+			class Recover
+			{
+				file = "\zsn_surrender\functions\fn_recover.sqf";
+			};
 			class Dammage
 			{
 				file = "\zsn_surrender\functions\fn_dammage.sqf";
