@@ -32,6 +32,10 @@ class Extended_InitPost_EventHandlers
 		{
 			init = "_this call zsn_fnc_surrenderInit";
 		};
+		class zsn_dropWeapon
+		{
+			init = "nul = [] execVM 'zsn_surrender\functions\fn_dropweapon.sqf'";
+		};
 	};
 };
 class cfgvehicles

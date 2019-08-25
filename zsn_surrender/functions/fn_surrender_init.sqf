@@ -19,7 +19,7 @@ if (isServer) then {
 		_unit setvariable ["ZSN_isUnconscious", false, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
 		_unit spawn {
-			private ["_unit", "_ms","_time"];
+			private ["_unit", "_ms","_time","_nearestenemy"];
 			_unit = _this;
 			_ms = (_unit getVariable "ZSN_Side");
 			_time = random 3;
@@ -31,12 +31,7 @@ if (isServer) then {
 				[count cc, cc] remoteexec ["zsn_fnc_hint"];
 				while {alive _unit} do {
 					if (fleeing _unit) then {
-						if (!(_unit getVariable "ZSN_isSurrendering")) then {
-							if(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], (getpos (_unit findNearestEnemy getpos _unit)) distance (getpos _unit)] < 2) then {
-								if (!(isNull objectParent _unit)) then {doGetOut _unit;};
-								[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
-							};
-						};
+						[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
 					};
 					sleep _time;
 				};
