@@ -1,11 +1,11 @@
 params ["_unit"];
 _unit addEventHandler["HandleDamage",{
-	[_this select 0, _this select 1, _this select 2] call {
-		private ["_unit","_part","_dmg","_src","_proj","_ms"];
+	[_this select 0, _this select 1, _this select 2, _this select 4] call {
+		private ["_unit","_part","_dmg","_proj","_ms"];
 		_unit = _this select 0;
 		_part = _this select 1;
 		_dmg = _this select 2;
-		_proj = _this select 4;
+		_proj = _this select 3;
 		_ms = (_unit getVariable "ZSN_Side");
 		if (alive _unit) then {
 			if (_dmg > 0.1) then {

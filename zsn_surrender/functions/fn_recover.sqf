@@ -1,4 +1,4 @@
-params ["_unit","_bool","_time","_ms","_mg","_containers","_container","_friendlies","_grp"];
+params ["_unit","_bool","_time","_ms","_containers","_container","_cpos","_mg","_friendlies","_grp"];
 switch (_bool) do
 {
 	case false: {
@@ -11,11 +11,13 @@ switch (_bool) do
 		while {primaryWeapon _unit == ""} do {
 			_containers = [];
 			{if ((weaponcargo _x) select 0 isKindOf ["Rifle_Base_F", configFile >> "CfgWeapons"]) then {_containers pushback _x};} forEach nearestObjects [_unit, ["ReammoBox", "ThingX"], 100];
+			if (count _containers == 0) exitWith {};
 			if (count _containers > 0) then {
-				_containers = [_containers, [], { _unit distance _x }, "ASCEND"] call BIS_fnc_sortBy;
+				_containers = [_containers, [], {_unit distance _x}, "ASCEND"] call BIS_fnc_sortBy;
 				_container = _containers select 0;
-				_unit doMove getpos _container;
-				if (_unit distance _container < 5) then {
+				_cpos = getpos _container;
+				_unit doMove _cpos;
+				if (_unit distance _cpos < 5) then {
 					_unit action ["TakeWeapon", _container, ((weaponcargo _container) select 0)];
 				};
 			};
