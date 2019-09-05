@@ -34,7 +34,7 @@ class Extended_InitPost_EventHandlers
 		};
 		class zsn_dropWeapon
 		{
-			init = "nul = [] execVM 'zsn_surrender\functions\fn_dropweapon.sqf'";
+			init = "nul = [] execVM 'zsn_surrender\functions\fn_dropaction.sqf'";
 		};
 	};
 };
@@ -80,6 +80,35 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_hint.sqf";
 			};
+			class Downed
+			{
+				file = "\zsn_surrender\functions\fn_downed.sqf";
+			};
+			class Alerted
+			{
+				file = "\zsn_surrender\functions\fn_alerted.sqf";
+			};
+			class medicLoop
+			{
+				file = "\zsn_surrender\functions\fn_medicloop.sqf";
+			};
+			class dropAction
+			{
+				file = "\zsn_surrender\functions\fn_dropAction.sqf";
+			};
+			class dropWeapon
+			{
+				file = "\zsn_surrender\functions\fn_dropWeapon.sqf";
+			};
 		};
+	};
+};
+class CfgRemoteExec
+{
+	class Functions
+	{
+		class ZSN_fnc_Downed {};
+		class ZSN_fnc_Alerted {};
+		class ZSN_fnc_medicLoop {};
 	};
 };
