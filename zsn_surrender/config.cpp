@@ -107,8 +107,7 @@ class CfgRemoteExec
 {
 	class Functions
 	{
-		class ZSN_fnc_Downed {};
+		class ZSN_fnc_Dammage {};
 		class ZSN_fnc_Alerted {};
-		class ZSN_fnc_medicLoop {};
 	};
 };
