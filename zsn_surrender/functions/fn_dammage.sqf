@@ -13,7 +13,7 @@ _unit addEventHandler["HandleDamage",{
 					if (isNull objectParent _unit) then {
 						if (!(_unit getVariable "ZSN_isUnconscious")) then {
 							_unit setvariable ["ZSN_isUnconscious", true, true];
-							[_unit, _ms] remoteexec ["zsn_fnc_downed", _unit];
+							[_unit, _ms] spawn zsn_fnc_downed;
 						};
 					};
 				};
