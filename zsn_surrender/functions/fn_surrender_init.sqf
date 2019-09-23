@@ -11,7 +11,7 @@ if (isServer) then {
 		_unit setvariable ["ZSN_isUnconscious", false, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
 		_unit remoteExec ["ZSN_fnc_alerted", _unit];
-		_unit remoteExec ["ZSN_fnc_Dammage", _unit];
+		_unit remoteExecCall ["ZSN_fnc_Dammage", _unit];
 		_unit addEventHandler ["GetOutMan", {
 			params ["_unit", "_role", "_vehicle", "_turret"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {

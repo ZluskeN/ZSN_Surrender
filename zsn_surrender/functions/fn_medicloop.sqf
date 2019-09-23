@@ -4,7 +4,7 @@ _time = random 3;
 if (!(hasInterface && isPlayer _unit)) then {
 	_healQueue = [];
 	while {alive _unit} do {
-		sleep _time;
+		sleep _time+3;
 		_healQueueTemp = [];
 		{if ((lifestate _x == "INCAPACITATED") && (_x != _unit)) then {_healQueueTemp pushback _x;};} foreach nearestObjects [_unit, ["CAManBase"], 50];
 		if (count _healQueueTemp > 0) then {
@@ -13,18 +13,15 @@ if (!(hasInterface && isPlayer _unit)) then {
 			_unit doMove getpos _patient;
 			if (!(_healQueueTemp  isEqualTo _healQueue)) then {
 				_healQueue = _HealQueueTemp;
-				[_unit, _healQueue] remoteexec ["zsn_fnc_hint"];
+				[_unit, "is healing", _healQueue] remoteexec ["zsn_fnc_hint"];
 			} else {
 				if (_unit distance _patient < 5) then {
 					_unit additem "FirstAidKit";
 					_unit action ["HealSoldier", _patient];
 					_healQueue deleteAt 0;
 					_ms = _patient getVariable "ZSN_Side";
-					if (side _unit getFriend _ms < 0.6) then {
-						[_patient, true] call ace_captives_fnc_setSurrendered;
-						_patient reveal _unit;
-						[_patient, _ms, _time] call zsn_fnc_surrenderCycle;
-					};
+					_patient reveal _unit;
+					[_patient, _ms, _time] remoteExec ["zsn_fnc_surrenderCycle", _patient];
 				};
 			};
 		};

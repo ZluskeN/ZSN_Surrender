@@ -19,13 +19,9 @@ _unit addEventHandler["HandleDamage",{
 				};
 			};
 		};
-		if (_part isEqualTo "") then {0} else {
-			if (_proj isEqualTo "") then {
-				_unit getHit _part
-			} else {
-				_dmg
-			};
-		};
+		if (_proj isEqualTo "") then {
+			if (_part isEqualTo "") then {damage _unit} else {_unit getHit _part};
+		} else {_dmg};
 	};
 }];
 if (_unit getUnitTrait "Medic") then {

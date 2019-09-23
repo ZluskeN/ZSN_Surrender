@@ -107,7 +107,9 @@ class CfgRemoteExec
 {
 	class Functions
 	{
+		class ZSN_fnc_surrenderCycle {};
 		class ZSN_fnc_Dammage {};
 		class ZSN_fnc_Alerted {};
+		class ZSN_fnc_Hint {};
 	};
 };

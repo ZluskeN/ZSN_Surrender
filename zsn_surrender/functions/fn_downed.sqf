@@ -7,9 +7,9 @@ _dmg = selectMax _hpa;
 _unit setvariable ["ZSN_Dammage", _dmg, true];
 if (!(hasInterface && isPlayer _unit)) then {
 	if (alive _unit) then {
-		if (_dmg > 0.25) then {[_unit, false, _time, _ms] spawn zsn_fnc_recover;};
+		if (_dmg > 0.25) then {[_unit, false, _ms] call zsn_fnc_recover;};
 		_unit setUnconscious true;
-		[_unit, "Went down"] remoteexec ["zsn_fnc_hint"];	
+		[_unit, "Went down", _dmg] remoteexec ["zsn_fnc_hint"];	
 		while {(_unit getVariable "ZSN_Dammage" > 0.25) && (lifestate _unit == "INCAPACITATED")} do {
 			_unit setSuppression 1;
 			_unit setCaptive true;
@@ -19,11 +19,9 @@ if (!(hasInterface && isPlayer _unit)) then {
 			sleep _time;
 		};
 		if (!alive _unit) exitWith {};
-		sleep _time;
 		_unit setUnconscious false;
-		_unit setSuppression 0;
-		_unit setCaptive false;
+		_unit allowFleeing 1;
 		_unit setvariable ["ZSN_isUnconscious", false, true];
-		[_unit, _ms, _time] call zsn_fnc_surrenderCycle;
+		[_unit, _ms, _time] spawn zsn_fnc_surrenderCycle;
 	};
 };

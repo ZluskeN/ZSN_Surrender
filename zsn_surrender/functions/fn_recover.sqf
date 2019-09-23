@@ -1,4 +1,4 @@
-params ["_unit","_bool","_time","_ms","_containers","_container","_cpos","_mg","_friendlies","_grp"];
+params ["_unit","_bool","_ms","_containers","_container","_weapon","_mg","_friendlies","_grp"];
 switch (_bool) do
 {
 	case false: {
@@ -8,28 +8,26 @@ switch (_bool) do
 	};
 	case true: {
 		_mg = (_unit getVariable "ZSN_Group");
-		while {primaryWeapon _unit == ""} do {
-			_containers = [];
-			{if ((weaponcargo _x) select 0 isKindOf ["Rifle_Base_F", configFile >> "CfgWeapons"]) then {_containers pushback _x};} forEach nearestObjects [_unit, ["ReammoBox", "ThingX"], 100];
-			if (count _containers == 0) exitWith {};
-			if (count _containers > 0) then {
-				_containers = [_containers, [], {_unit distance _x}, "ASCEND"] call BIS_fnc_sortBy;
-				_container = _containers select 0;
-				_cpos = getpos _container;
-				_unit doMove _cpos;
-				if (_unit distance _cpos < 5) then {
-					_unit action ["TakeWeapon", _container, ((weaponcargo _container) select 0)];
-				};
-			};
-			sleep _time;
+		_containers = [];
+		{if ((weaponcargo _x) select 0 isKindOf ["Rifle_Base_F", configFile >> "CfgWeapons"]) then {_containers pushback _x};} forEach nearestObjects [_unit, ["ReammoBox", "ThingX"], 50];
+		if (count _containers > 0) then {
+			_containers = [_containers, [], {_unit distance _x}] call BIS_fnc_sortBy;
+			_container = _containers select 0;
+			_weapon = (weaponcargo _container) select 0;
+			//_unit addweapon _weapon;
+			//_container removeweaponcargo _weapon;
+			_unit action ["TakeWeapon", _container, _weapon];
+			[_unit, "Picked up a weapon", _weapon] remoteexec ["zsn_fnc_hint"];
 		};
 		[_unit] joinsilent _mg;
 		if (count units _unit < 2) then {
 			_friendlies = [];
-			{if (side _x == _ms) then {_friendlies pushback _x;};} foreach nearestObjects [getpos _unit, ["AllVehicles"], 100];
-			_friendlies = [_friendlies, [], {_unit distance _x}, "ASCEND"] call BIS_fnc_sortBy;
-			_grp = group (_friendlies select 1);
-			[_unit] joinsilent _grp;
+			{if (side _x == _ms) then {_friendlies pushback _x;};} foreach nearestObjects [getpos _unit, ["AllVehicles"], 50];
+			_friendlies = [_friendlies, [], {_unit distance _x}] call BIS_fnc_sortBy;
+			if (count _friendlies > 1) then {
+				_grp = group (_friendlies select 1);
+				[_unit] joinsilent _grp;
+			};
 		};
 	};
 };
