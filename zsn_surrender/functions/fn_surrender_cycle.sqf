@@ -22,10 +22,12 @@ if (alive _unit) then {
 					_unit setCaptive true;
 					_unit action ["Surrender", _unit];
 				};
-			} else {
-				_unit setCaptive false;
-				_unit setSuppression 0;
 			};
+		} else {
+			[_unit, false] call ace_captives_fnc_setSurrendered;
+			_unit setCaptive false;
+			[_unit, true, _ms] call zsn_fnc_recover;
+			_unit setSuppression 0;
 		};
 	};
 };

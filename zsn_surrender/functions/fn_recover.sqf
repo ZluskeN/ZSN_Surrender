@@ -1,4 +1,4 @@
-params ["_unit","_bool","_ms","_containers","_container","_weapon","_mg","_friendlies","_grp"];
+params ["_unit","_bool","_ms","_time","_mg","_friendlies","_grp"];
 switch (_bool) do
 {
 	case false: {
@@ -8,16 +8,24 @@ switch (_bool) do
 	};
 	case true: {
 		_mg = (_unit getVariable "ZSN_Group");
-		_containers = [];
-		{if ((weaponcargo _x) select 0 isKindOf ["Rifle_Base_F", configFile >> "CfgWeapons"]) then {_containers pushback _x};} forEach nearestObjects [_unit, ["ReammoBox", "ThingX"], 50];
-		if (count _containers > 0) then {
-			_containers = [_containers, [], {_unit distance _x}] call BIS_fnc_sortBy;
-			_container = _containers select 0;
-			_weapon = (weaponcargo _container) select 0;
-			//_unit addweapon _weapon;
-			//_container removeweaponcargo _weapon;
-			_unit action ["TakeWeapon", _container, _weapon];
-			[_unit, "Picked up a weapon", _weapon] remoteexec ["zsn_fnc_hint"];
+		_unit spawn {
+			params ["_unit","_time","_containers","_container","_boxContents","_weapon"];
+			_time = random 3;
+			while {primaryweapon _unit == "" && alive _unit} do {
+				_containers = [];
+				{if ((weaponcargo _x) select 0 isKindOf ["Rifle_Base_F", configFile >> "CfgWeapons"]) then {_containers pushback _x};} forEach nearestObjects [_unit, ["ReammoBox", "ThingX"], 50];
+				if (count _containers > 0) then {
+					_containers = [_containers, [], {_unit distance _x}] call BIS_fnc_sortBy;
+					_container = _containers select 0;
+					_boxContents = weaponCargo _container;
+					_weapon = _boxContents select 0;
+					//_unit addweapon _weapon;
+					//_container removeweaponcargo _weapon;
+					_unit action ["TakeWeapon", _container, _weapon];
+					[_unit, "Picked up a weapon", _weapon] remoteexec ["zsn_fnc_hint"];
+				};
+				sleep _time;
+			};
 		};
 		[_unit] joinsilent _mg;
 		if (count units _unit < 2) then {
