@@ -2,11 +2,13 @@ params ["_unit","_bool","_ms","_time","_mg","_friendlies","_grp"];
 switch (_bool) do
 {
 	case false: {
+		_unit setCaptive true;
 		_unit setvariable ["ZSN_Group", group _unit, true];
 		if (count weaponsItems _unit > 0) then {_unit spawn zsn_fnc_dropweapon};
 		[_unit] joinsilent grpNull;
 	};
 	case true: {
+		_unit setCaptive false;
 		_mg = (_unit getVariable "ZSN_Group");
 		_unit spawn {
 			params ["_unit","_time","_containers","_container","_boxContents","_weapon"];
