@@ -32,7 +32,7 @@ if (isServer) then {
 					_unit = _this;
 					_time = random 3;
 					while {alive _unit} do {
-						if (!(_unit in zsn_pa)) then {
+						if (!(hasInterface && isPlayer _unit)) then {
 							if ((behaviour _unit == "SAFE") OR (behaviour _unit == "CARELESS")) then {
 								[_unit] call ace_weaponselect_fnc_putWeaponAway;
 								waituntil {sleep _time; ((behaviour _unit != "CARELESS") && (behaviour _unit != "SAFE"));};
