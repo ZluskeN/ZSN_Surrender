@@ -1,7 +1,5 @@
-private ["_unit", "_ms","_time"];
-_unit = _this;
+params ["_unit","_time", "_ms"];
 _ms = (_unit getVariable "ZSN_Side");
-_time = random 3;
 if (!(hasInterface && isPlayer _unit)) then {
 	waituntil {sleep _time; _unit call BIS_fnc_enemyDetected;};
 	waituntil {sleep _time; ((count cc < 36) && (!(_unit in cc)));};

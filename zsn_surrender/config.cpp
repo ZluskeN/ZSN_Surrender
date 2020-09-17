@@ -80,18 +80,18 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_hint.sqf";
 			};
-			class Downed
-			{
-				file = "\zsn_surrender\functions\fn_downed.sqf";
-			};
+//			class Downed
+//			{
+//				file = "\zsn_surrender\functions\fn_downed.sqf";
+//			};
 			class Alerted
 			{
 				file = "\zsn_surrender\functions\fn_alerted.sqf";
 			};
-			class medicLoop
-			{
-				file = "\zsn_surrender\functions\fn_medicloop.sqf";
-			};
+//			class medicLoop
+//			{
+//				file = "\zsn_surrender\functions\fn_medicloop.sqf";
+//			};
 			class dropAction
 			{
 				file = "\zsn_surrender\functions\fn_dropAction.sqf";

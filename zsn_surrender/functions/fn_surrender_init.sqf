@@ -3,6 +3,7 @@ if (isServer) then {
 	if (isNil "cc") then {cc = []};
 	publicVariable "cc";
 	if (_unit isKindOf "CAManBase") then {
+		_time = random 3;
 		_unit setUnitPosWeak "UP";
 		_unit setCombatMode "WHITE";
 		_unit setvariable ["ZSN_Dammage", 0, true];
@@ -10,14 +11,16 @@ if (isServer) then {
 		_unit setvariable ["ZSN_Group", group _unit, true];
 		_unit setvariable ["ZSN_isUnconscious", false, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
-		_unit remoteExec ["ZSN_fnc_alerted", _unit];
-		_unit remoteExecCall ["ZSN_fnc_Dammage", _unit];
+		[_unit, _time] remoteExec ["ZSN_fnc_alerted", _unit];
+		[_unit, _time] remoteExec ["ZSN_fnc_Dammage", _unit];
+//		if (_unit getUnitTrait "Medic") then {
+//			[_unit, _time] spawn zsn_fnc_medicloop;
+//		};
 		_unit addEventHandler ["GetOutMan", {
-			params ["_unit", "_role", "_vehicle", "_turret"];
+			params ["_unit", "_role", "_vehicle", "_turret","_time"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {
-				_unit spawn {
+				[_unit, _time] spawn {
 					params ["_unit","_time"];
-					_time = random 3;
 					_unit setcaptive true;
 					waituntil {sleep _time; getpos _unit select 2 < 2};
 					_unit setcaptive false;
@@ -27,10 +30,8 @@ if (isServer) then {
 		if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
 			_unit addItem "ACE_CableTie";
 			if (currentWeapon _unit isKindOf ["Pistol_Base_F", configFile >> "CfgWeapons"]) then {
-				_unit spawn {
-					private ["_unit","_time"];
-					_unit = _this;
-					_time = random 3;
+				[_unit, _time] spawn {
+					params ["_unit","_time"];
 					while {alive _unit} do {
 						if (!(hasInterface && isPlayer _unit)) then {
 							if ((behaviour _unit == "SAFE") OR (behaviour _unit == "CARELESS")) then {
