@@ -9,13 +9,9 @@ if (isServer) then {
 		_unit setvariable ["ZSN_Dammage", 0, true];
 		_unit setvariable ["ZSN_Side", side _unit, true];
 		_unit setvariable ["ZSN_Group", group _unit, true];
-		_unit setvariable ["ZSN_isUnconscious", false, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
 		[_unit, _time] remoteExec ["ZSN_fnc_alerted", _unit];
 		[_unit, _time] remoteExec ["ZSN_fnc_Dammage", _unit];
-//		if (_unit getUnitTrait "Medic") then {
-//			[_unit, _time] spawn zsn_fnc_medicloop;
-//		};
 		_unit addEventHandler ["GetOutMan", {
 			params ["_unit", "_role", "_vehicle", "_turret","_time"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {
