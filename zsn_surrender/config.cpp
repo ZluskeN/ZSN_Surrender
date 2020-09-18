@@ -14,14 +14,7 @@ class CfgPatches
 		units[] = {};
 		weapons[] = {};
 		requiredVersion = 1;
-		requiredAddons[] = {"ace_common"};
-	};
-	class zsn_squat
-	{
-		units[] = {};
-		weapons[] = {};
-		requiredVersion = 1;
-		requiredAddons[] = {};
+		requiredAddons[] = {"cba_main"};
 	};
 };
 class Extended_InitPost_EventHandlers

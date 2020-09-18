@@ -36,7 +36,7 @@ if (alive _unit) then {
 				isNil {[_unit, false] call ace_captives_fnc_setSurrendered;};
 			};
 			_unit setCaptive false;
-			isNil {[_unit, true, _ms] call zsn_fnc_recover;};
+			[_unit, true, _ms] spawn zsn_fnc_recover;
 			_unit setSuppression 0;
 		};
 	};

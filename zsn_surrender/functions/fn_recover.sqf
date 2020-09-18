@@ -4,7 +4,11 @@ switch (_bool) do
 	case false: {
 		_unit setCaptive true;
 		_unit setvariable ["ZSN_Group", group _unit, true];
-		if (count weaponsItems _unit > 0) then {_unit spawn zsn_fnc_dropweapon};
+		if (isClass(configFile >> "CfgPatches" >> "ace_hitreactions")) then {
+			if (count weaponsItems _unit > 0) then {_unit call ace_hitreactions_fnc_throwWeapon};
+		} else {
+			if (count weaponsItems _unit > 0) then {_unit call zsn_fnc_dropweapon};
+		};
 		[_unit] joinsilent grpNull;
 	};
 	case true: {
