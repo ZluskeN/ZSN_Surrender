@@ -1,6 +1,6 @@
 params ["_unit", "_time","_ms"];
 _ms = (_unit getVariable "ZSN_Side");
-_unit addEventHandler ["HitPart", {
+/* _unit addEventHandler ["HitPart", {
 	_part = ((_this select 0) select 5); 
 	_target = ((_this select 0) select 0); 
 	_weapon = currentWeapon _target;
@@ -25,7 +25,7 @@ _unit addEventHandler ["HitPart", {
 		};
 		[_target, true, _ms] spawn zsn_fnc_recover;
 	};
-}];
+}]; */
 while {alive _unit} do {
 	sleep _time;
 	_ms = (_unit getVariable "ZSN_Side");	
