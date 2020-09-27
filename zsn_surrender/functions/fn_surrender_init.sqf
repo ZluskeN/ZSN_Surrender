@@ -13,12 +13,12 @@ if (isServer) then {
 		[_unit, _time] remoteExec ["ZSN_fnc_alerted", _unit];
 		[_unit, _time] remoteExec ["ZSN_fnc_Dammage", _unit];
 		_unit addEventHandler ["GetOutMan", {
-			params ["_unit", "_role", "_vehicle", "_turret","_time"];
+			params ["_unit", "_role", "_vehicle"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {
 				[_unit, _time] spawn {
-					params ["_unit","_time"];
+					params ["_unit"];
 					_unit setcaptive true;
-					waituntil {sleep _time; getpos _unit select 2 < 2};
+					waituntil {getpos _unit select 2 < 2};
 					_unit setcaptive false;
 				};
 			};
