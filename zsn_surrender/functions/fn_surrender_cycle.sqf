@@ -19,7 +19,7 @@ if (alive _unit) then {
 //					while {(_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], _dist]) < 2} do {
 					waitUntil{
 						sleep _time;
-						{_unit reveal [_x, 4]} foreach nearestObjects [_unit, ["AllVehicles"], 100];
+						{_unit reveal [_x, 4]} foreach nearestObjects [_unit, ["AllVehicles"], 200];
 						_nearestenemy = _unit findnearestenemy getpos _unit;
 						_dist = ((getpos _nearestenemy) distance (getpos _unit)); 
 						((_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], _dist]) > 1)

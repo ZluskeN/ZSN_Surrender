@@ -11,7 +11,7 @@ if (isServer) then {
 		_unit setvariable ["ZSN_Group", group _unit, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
 		[_unit, _time] remoteExec ["ZSN_fnc_alerted", _unit];
-		[_unit, _time] remoteExec ["ZSN_fnc_Dammage", _unit];
+//		[_unit, _time] remoteExec ["ZSN_fnc_Dammage", _unit];
 		_unit addEventHandler ["GetOutMan", {
 			params ["_unit", "_role", "_vehicle"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {
@@ -41,5 +41,31 @@ if (isServer) then {
 				};
 			};
 		};
+	};
+	if (isClass(configFile >> "CfgPatches" >> "ace_medical_engine")) then {
+	["ace_unconscious", { // global event (runs on all machines)
+		params ["_unit", "_isUnconscious","_time","_ms"];
+		_time = random 3;
+		_ms = (_unit getVariable "ZSN_Side");	
+		if ((_isUnconscious) && (isNull objectParent _unit)) then {
+			if (!(_unit getVariable "ZSN_isUnconscious")) then {
+				_unit setvariable ["ZSN_isUnconscious", true, true];
+				[_unit, "Went down", _ms] remoteexec ["zsn_fnc_hint"];	
+				isNil {[_unit, false, _ms] call zsn_fnc_recover;};
+				[_unit, _ms, _time] spawn {
+					params ["_unit","_ms","_time"];
+					while {(lifestate _unit == "INCAPACITATED")} do {
+						sleep _time;
+						_unit setSuppression 1;
+						_unit setCaptive true;
+					};
+					if (!alive _unit) exitWith {};
+					_unit allowFleeing 1;
+					_unit setvariable ["ZSN_isUnconscious", false, true];
+					isNil {[_unit, _ms, _time] call zsn_fnc_surrenderCycle;};
+				};
+			};
+		};
+	}] call CBA_fnc_addEventHandler;
 	};
 };

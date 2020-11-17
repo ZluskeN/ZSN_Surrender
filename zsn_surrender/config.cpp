@@ -31,22 +31,22 @@ class Extended_InitPost_EventHandlers
 		};
 	};
 };
-class cfgvehicles
-{
-	class Logic;
-	class module_F: Logic
-	{
-		class EventHandlers;
-	};
-	class ModuleCurator_F: Module_F
-	{
-		class EventHandlers
-		{
-			init = "_this call bis_fnc_moduleInit;";
-			curatorobjectplaced = "[_this select 1] call zsn_fnc_surrenderInit";
-		};
-	};
-};
+//class cfgvehicles
+//{
+//	class Logic;
+//	class module_F: Logic
+//	{
+//		class EventHandlers;
+//	};
+//	class ModuleCurator_F: Module_F
+//	{
+//		class EventHandlers
+//		{
+//			init = "_this call bis_fnc_moduleInit;";
+//			curatorobjectplaced = "[_this select 1] call zsn_fnc_surrenderInit";
+//		};
+//	};
+//};
 class CfgFunctions
 {
 	class ZSN
@@ -65,10 +65,10 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_recover.sqf";
 			};
-			class Dammage
-			{
-				file = "\zsn_surrender\functions\fn_dammage.sqf";
-			};
+//			class Dammage
+//			{
+//				file = "\zsn_surrender\functions\fn_dammage.sqf";
+//			};
 			class Hint
 			{
 				file = "\zsn_surrender\functions\fn_hint.sqf";
