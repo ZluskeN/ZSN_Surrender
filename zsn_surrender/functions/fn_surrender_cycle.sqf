@@ -2,7 +2,7 @@ params ["_unit","_ms","_time","_nearestenemy","_dist"];
 if (alive _unit) then {
 	if (!(_unit getVariable "ZSN_isSurrendering")) then {
 		{_unit reveal [_x, 4]} foreach nearestObjects [_unit, ["AllVehicles"], 100];
-		_nearestenemy = _unit findnearestenemy getpos _unit;
+		_nearestenemy = _unit findnearestenemy _unit;
 		_dist = ((getpos _nearestenemy) distance (getpos _unit));
 		if((_ms countSide nearestObjects [getpos _unit, ["AllVehicles"], _dist]) < 2) then {
 			_unit setvariable ["ZSN_isSurrendering", true, true];
@@ -12,16 +12,16 @@ if (alive _unit) then {
 			_unit setCaptive true;
 			if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
 				[_unit, true] call ace_captives_fnc_setSurrendered;
-				[_unit, _ms, _time] spawn {
-					params ["_unit","_ms","_time","_entities","_enemies"];
+				[_unit,_time] spawn {
+					params ["_unit","_time"];
 					waitUntil{
 						sleep _time;
-						_entities = getpos _unit nearEntities 200;
-						_enemies = _unit countEnemy _entities;
-						_enemies == 0
+						isnull (_unit findNearestEnemy _unit)
 					};
-					_unit setvariable ["ZSN_isSurrendering", false, true];
-					[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
+					if (!(_unit getVariable ["ace_captives_isHandcuffed", false])) then {
+						_unit setvariable ["ZSN_isSurrendering", false, true];
+						[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
+					};
 				};
 			} else {
 				_unit action ["Surrender", _unit];
