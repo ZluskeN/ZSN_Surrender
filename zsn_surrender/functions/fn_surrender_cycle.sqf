@@ -12,8 +12,8 @@ if (alive _unit) then {
 			_unit setCaptive true;
 			if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
 				[_unit, true] call ace_captives_fnc_setSurrendered;
-				[_unit,_time] spawn {
-					params ["_unit","_time"];
+				[_unit, _ms, _time] spawn {
+					params ["_unit","_ms","_time"];
 					waitUntil{
 						sleep _time;
 						isnull (_unit findNearestEnemy _unit)
