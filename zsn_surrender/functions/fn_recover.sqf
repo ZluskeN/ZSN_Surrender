@@ -9,7 +9,7 @@ switch (_bool) do
 		} else {
 			if (count weaponsItems _unit > 0) then {_unit call zsn_fnc_dropweapon};
 		};
-		[_unit] joinsilent grpNull;
+		if (!(hasinterface && isplayer _unit)) then {[_unit] joinsilent grpNull;};
 	};
 	case true: {
 		_unit setCaptive false;

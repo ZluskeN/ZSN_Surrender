@@ -25,28 +25,15 @@ class Extended_InitPost_EventHandlers
 		{
 			init = "_this call zsn_fnc_surrenderInit";
 		};
-		class zsn_dropWeapon
-		{
-			init = "nul = [] execVM 'zsn_surrender\functions\fn_dropaction.sqf'";
-		};
 	};
 };
-//class cfgvehicles
-//{
-//	class Logic;
-//	class module_F: Logic
-//	{
-//		class EventHandlers;
-//	};
-//	class ModuleCurator_F: Module_F
-//	{
-//		class EventHandlers
-//		{
-//			init = "_this call bis_fnc_moduleInit;";
-//			curatorobjectplaced = "[_this select 1] call zsn_fnc_surrenderInit";
-//		};
-//	};
-//};
+class Extended_PostInit_EventHandlers
+{
+	class zsn_server_init
+	{
+		init = "_this call zsn_fnc_downedinit";
+	};
+};
 class CfgFunctions
 {
 	class ZSN
@@ -73,13 +60,13 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_alerted.sqf";
 			};
-			class dropAction
-			{
-				file = "\zsn_surrender\functions\fn_dropAction.sqf";
-			};
 			class dropWeapon
 			{
 				file = "\zsn_surrender\functions\fn_dropWeapon.sqf";
+			};
+			class downedInit
+			{
+				file = "\zsn_surrender\functions\fn_downedInit.sqf";
 			};
 		};
 	};
