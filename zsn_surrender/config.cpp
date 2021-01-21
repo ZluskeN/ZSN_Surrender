@@ -17,21 +17,21 @@ class CfgPatches
 		requiredAddons[] = {"cba_main"};
 	};
 };
+class Extended_PostInit_EventHandlers
+{
+	class zsn_downed_init
+	{
+		init = "_this call zsn_fnc_downedinit";
+	};
+};
 class Extended_InitPost_EventHandlers
 {
 	class CAManBase
 	{
-		class zsn_surrenderInit
+		class zsn_surrender_init
 		{
-			init = "_this call zsn_fnc_surrenderInit";
+			init = "_this select 0 call zsn_fnc_surrenderInit";
 		};
-	};
-};
-class Extended_PostInit_EventHandlers
-{
-	class zsn_server_init
-	{
-		init = "_this call zsn_fnc_downedinit";
 	};
 };
 class CfgFunctions
