@@ -68,6 +68,10 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_downedInit.sqf";
 			};
+			class findNearestEnemy
+			{
+				file = "\zsn_surrender\functions\fn_findNearestEnemy.sqf";
+			};
 		};
 	};
 };
