@@ -7,7 +7,8 @@ if (!(hasInterface && isPlayer _unit)) then {
 	publicVariable "cc";
 	[count cc, "alerted units:", cc] remoteexec ["zsn_fnc_hint"];
 	while {alive _unit} do {
-		if (fleeing _unit) then {
+		_isSurrendering = _unit getVariable "ZSN_isSurrendering";
+		if (fleeing _unit && !_isSurrendering) then {
 			[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
 		};
 		sleep _time;

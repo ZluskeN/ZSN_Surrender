@@ -38,4 +38,6 @@ if (!(hasinterface && isplayer _unit)) then {
 			_unit setSuppression 0;
 		};
 	};
+} else {
+	_unit setCaptive false;
 };

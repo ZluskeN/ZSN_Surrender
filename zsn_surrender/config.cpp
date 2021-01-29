@@ -17,6 +17,13 @@ class CfgPatches
 		requiredAddons[] = {"cba_main"};
 	};
 };
+class Extended_PreInit_EventHandlers 
+{
+    class zsn_hdc_settings
+	{
+        init = "call compile preprocessFileLineNumbers 'zsn_surrender\XEH_preInit.sqf'";
+    };
+};
 class Extended_PostInit_EventHandlers
 {
 	class zsn_downed_init
