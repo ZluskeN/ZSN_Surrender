@@ -1,11 +1,8 @@
 if (isServer) then {
 	params ["_unit"];
-	if (isNil "cc") then {cc = []};
-	publicVariable "cc";
-	if (_unit isKindOf "CAManBase") then {
+	_unit setvariable ["ZSN_Side", side _unit, true];
+	if (_unit isKindOf "CAManBase" && side _unit != CIVILIAN) then {
 		_time = random 3;
-		_unit setvariable ["ZSN_Dammage", 0, true];
-		_unit setvariable ["ZSN_Side", side _unit, true];
 		_unit setvariable ["ZSN_Group", group _unit, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
 		[_unit, _time] remoteExec ["ZSN_fnc_alerted", _unit];
