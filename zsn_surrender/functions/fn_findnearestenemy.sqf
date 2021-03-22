@@ -7,8 +7,11 @@ if (count _nearEnemies > 0) then {
 	_nearestenemy = _nearEnemies select 0;
 	_dist = _nearestenemy distance _unit;
 	_targets = getpos _unit nearEntities ["AllVehicles", _dist];
-	if (_ms countSide _targets <= ZSN_Surrendercount) then {_hopeless = true};
-	_isSurrendering = _unit getVariable "ZSN_isSurrendering";
-	if (!_isSurrendering) then {[_unit, "surrendered to", _nearestenemy] remoteexec ["zsn_fnc_hint"];};
+	if (_ms countSide _targets <= ZSN_Surrendercount) then {
+		_hopeless = true;
+		_unit doWatch _nearestenemy;
+		_isSurrendering = _unit getVariable "ZSN_isSurrendering";
+		if (!_isSurrendering) then {[_unit, "surrendered to", _nearestenemy] remoteexec ["zsn_fnc_hint"];};
+	};
 };
 _hopeless
