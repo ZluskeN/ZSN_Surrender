@@ -1,13 +1,20 @@
-params ["_unit","_bool","_ms","_time","_mg","_friendlies","_grp"];
+params ["_unit","_bool","_willdrop","_ms","_time","_mg","_friendlies","_grp"];
+
+_willdrop = switch (ZSN_WeaponsDrop) do {
+	case "true": {true};
+	case "AI": {!(isplayer _unit)};
+	case "false": {false};
+};
+
 switch (_bool) do
 {
 	case false: {
 		_unit setCaptive true;
 		_unit setvariable ["ZSN_Group", group _unit, true];
 		if (isClass(configFile >> "CfgPatches" >> "ace_hitreactions")) then {
-			if (count weaponsItems _unit > 0) then {_unit call ace_hitreactions_fnc_throwWeapon};
+			if (count weaponsItems _unit > 0 && _willdrop) then {_unit call ace_hitreactions_fnc_throwWeapon};
 		} else {
-			if (count weaponsItems _unit > 0) then {_unit call zsn_fnc_dropweapon};
+			if (count weaponsItems _unit > 0 && _willdrop) then {_unit call zsn_fnc_dropweapon};
 		};
 		if (!(hasinterface && isplayer _unit)) then {[_unit] joinsilent grpNull;};
 	};
