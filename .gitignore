@@ -1,8 +1,24 @@
+# Windows thumbnail cache files
+Thumbs.db
+ehthumbs.db
+ehthumbs_vista.db
 
-@zsn_surrender/Addons/zsn_surrender.pbo
-@zsn_surrender/Addons/zsn_surrender.pbo.zsn.bisign
-Keys/zsn.biprivatekey
-temp/zsn_surrender.packing.log
-fn_downed.sqf
-fn_medicloop.sqf
-fn_dropaction.sqf
+# Folder config file
+Desktop.ini
+
+# Windows shortcuts
+*.lnk
+
+# pboproject log files
+*.log
+
+# output pbo files
+*.pbo
+
+# keys
+*.bikey
+*.biprivatekey
+*.bisign
+
+# hemtt releases folder
+releases/

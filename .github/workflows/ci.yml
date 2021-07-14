@@ -1,0 +1,23 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  hemtt:
+    name: HEMTT
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v2
+
+      - name: Build
+        uses: docker://hemtt/hemtt:0.7.6
+        with:
+          entrypoint: hemtt
+          args: build --ci --release
+
+      - name: Upload
+        uses: actions/upload-artifact@v1
+        with:
+          name: '@zsn_surrender'
+          path: releases/0.0.0/
