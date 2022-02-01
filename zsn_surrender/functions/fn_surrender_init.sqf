@@ -1,6 +1,6 @@
 if (isServer) then {
 	params ["_unit"];
-	_unit setvariable ["ZSN_Side", side _unit, true];
+//	_unit setvariable ["ZSN_Side", side _unit, true];
 	if (_unit isKindOf "CAManBase" && side _unit != CIVILIAN) then {
 		_time = random 3;
 		_unit setvariable ["ZSN_Group", group _unit, true];
@@ -12,7 +12,7 @@ if (isServer) then {
 		_unit addEventHandler ["GetOutMan", {
 			params ["_unit", "_role", "_vehicle"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {
-				[_unit, _time] spawn {
+				[_unit] spawn {
 					params ["_unit"];
 					_unit setcaptive true;
 					waituntil {getpos _unit select 2 < 2};

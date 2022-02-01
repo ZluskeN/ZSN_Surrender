@@ -1,4 +1,4 @@
-params ["_unit","_bool","_willdrop","_ms","_time","_mg","_friendlies","_grp"];
+params ["_unit","_bool","_ms","_willdrop","_time","_mg","_friendlies","_grp"];
 
 _willdrop = switch (ZSN_WeaponsDrop) do {
 	case "true": {true};

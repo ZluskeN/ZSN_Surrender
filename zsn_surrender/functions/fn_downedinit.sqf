@@ -4,7 +4,8 @@ if (isServer) then {
 	if (isClass(configFile >> "CfgPatches" >> "ace_medical_engine")) then {
 		["ace_unconscious", {
 			params ["_unit","_isUnconscious","_ms","_time"];
-			_ms = (_unit getVariable "ZSN_Side");
+//			_ms = (_unit getVariable "ZSN_Side");
+			_ms = side group _unit;
 			_time = random 3;
 			if (_isUnconscious && _ms != CIVILIAN) then {
 				[_unit, false, _ms] remoteexec ["zsn_fnc_recover", _unit];
