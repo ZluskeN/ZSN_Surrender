@@ -63,10 +63,6 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_hint.sqf";
 			};
-			class Alerted
-			{
-				file = "\zsn_surrender\functions\fn_alerted.sqf";
-			};
 			class dropWeapon
 			{
 				file = "\zsn_surrender\functions\fn_dropWeapon.sqf";

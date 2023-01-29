@@ -1,11 +1,8 @@
 if (isServer) then {
 	params ["_unit"];
-//	_unit setvariable ["ZSN_Side", side _unit, true];
 	if (_unit isKindOf "CAManBase" && side _unit != CIVILIAN) then {
-		_time = random 3;
-		_unit setvariable ["ZSN_Group", group _unit, true];
+		_unit setvariable ["ZSN_Time", random 3, true];
 		_unit setvariable ["ZSN_isSurrendering", false, true];
-		[_unit, _time] remoteExec ["ZSN_fnc_alerted", _unit];
 		if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
 			_unit addItem "ACE_CableTie";
 		};

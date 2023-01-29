@@ -1,6 +1,15 @@
 if (isServer) then {
-	zsn_cc = [];
-	publicVariable "zsn_cc";
+	addMissionEventHandler ["GroupCreated", {
+		params ["_group"];
+		_group addEventHandler ["Fleeing", {
+			params ["_group", "_fleeingNow"];
+			if (_fleeingNow) then {
+				_ms = side _group;
+				[_group, "is fleeing!"] remoteexec ["zsn_fnc_hint"];
+				{[_x, _ms] call ZSN_fnc_surrenderCycle} forEach units _group;
+			};
+		}];
+	}];
 	if (isClass(configFile >> "CfgPatches" >> "ace_medical_engine")) then {
 		["ace_unconscious", {
 			params ["_unit","_isUnconscious","_ms","_time"];

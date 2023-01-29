@@ -1,4 +1,5 @@
 params ["_unit","_ms","_time","_nearestenemy","_isSurrendering","_hopeless"];
+_time = _unit getVariable "ZSN_Time";
 _isSurrendering = _unit getVariable "ZSN_isSurrendering";
 if (!(hasinterface && isplayer _unit)) then {
 	if (alive _unit && !_isSurrendering) then {
