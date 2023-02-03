@@ -1,44 +1,21 @@
-params ["_unit","_ms","_time","_nearestenemy","_isSurrendering","_hopeless"];
-_time = _unit getVariable "ZSN_Time";
-_isSurrendering = _unit getVariable "ZSN_isSurrendering";
+params ["_unit","_ms","_time","_isSurrendering","_willsurrender","_hopeless"];
 if (!(hasinterface && isplayer _unit)) then {
-	if (alive _unit && !_isSurrendering) then {
-		_hopeless = [_unit, _ms] call zsn_fnc_findnearestenemy;
-		if (_hopeless) then {
-			_unit setvariable ["ZSN_isSurrendering", true, true];
-			if (!(isNull objectParent _unit)) then {
-				doGetOut _unit;
-				waitUntil {sleep _time; isNull objectParent _unit};
-			};
-			isNil {[_unit, false, _ms] call zsn_fnc_recover};
-			_unit setCaptive true;
-			if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
-				[_unit, true] call ace_captives_fnc_setSurrendered;
-				[_unit, _ms, _time] spawn {
-					params ["_unit","_ms","_time"];
-					waitUntil {
-						sleep _time;
-						_hopeless = [_unit, _ms] call zsn_fnc_findnearestenemy;
-						!_hopeless
-					};
-					if (!(_unit getVariable ["ace_captives_isHandcuffed", false])) then {
-						_unit setvariable ["ZSN_isSurrendering", false, true];
-						[_unit, _ms, _time] call ZSN_fnc_surrenderCycle;
-					};
-				};
-			} else {
-				_unit action ["Surrender", _unit];
-			};
-		} else {
-			_unit setvariable ["ZSN_isSurrendering", false, true];
-			if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
-				[_unit, false] call ace_captives_fnc_setSurrendered;
-			};
-			_unit setCaptive false;
-			[_unit, true, _ms] spawn zsn_fnc_recover;
-			_unit setSuppression 0;
+	_hopeless = [_unit, _ms] call zsn_fnc_findnearestenemy;
+	if (_hopeless) then {
+		_unit setvariable ["ZSN_Group", group _unit, true];
+		_unit setvariable ["ZSN_isSurrendering", true, true];
+		if (!(isNull objectParent _unit)) then {
+			doGetOut _unit;
+			waitUntil {sleep _time; isNull objectParent _unit};
 		};
+		_unit setCaptive true;
+		[_unit] joinsilent grpNull;
+		if (count weaponsItems _unit > 0) then {_unit call ace_hitreactions_fnc_throwWeapon};
+		[_unit, true] call ace_captives_fnc_setSurrendered;
+	} else {
+		_unit setvariable ["ZSN_isSurrendering", false, true];
+		_unit setCaptive false;
+		[_unit, _ms] remoteexecCall ["zsn_fnc_recover", _unit];
+		_unit setSuppression 0;
 	};
-} else {
-	_unit setCaptive false;
 };
