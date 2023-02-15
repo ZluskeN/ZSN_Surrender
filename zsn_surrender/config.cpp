@@ -63,10 +63,6 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_hint.sqf";
 			};
-			class dropWeapon
-			{
-				file = "\zsn_surrender\functions\fn_dropWeapon.sqf";
-			};
 			class downedInit
 			{
 				file = "\zsn_surrender\functions\fn_downedInit.sqf";
@@ -74,6 +70,22 @@ class CfgFunctions
 			class findNearestEnemy
 			{
 				file = "\zsn_surrender\functions\fn_findNearestEnemy.sqf";
+			};
+			class spawnstretcher
+			{
+				file = "\zsn_acescripts\functions\fn_spawnstretcher.sqf";
+			};
+			class unconscious
+			{
+				file = "\zsn_acescripts\functions\fn_unconscious.sqf";
+			};
+			class transfercontents
+			{
+				file = "\zsn_acescripts\functions\fn_transfercontents.sqf";
+			};
+			class transferloop
+			{
+				file = "\zsn_acescripts\functions\fn_transferloop.sqf";
 			};
 		};
 	};

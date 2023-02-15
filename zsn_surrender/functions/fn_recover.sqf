@@ -13,11 +13,11 @@ if (isNull objectParent _unit) then {
 			[_unit, "Picked up a weapon", _weapon] remoteexec ["zsn_fnc_hint"];
 		};
 	};
-	_mg = (_unit getVariable "ZSN_Group");
+	_mg = _unit getVariable "ZSN_Group";
 	[_unit] joinsilent _mg;
 	if (count units _unit < 2) then {
 		_friendlies = [];
-		{if (side _x == _ms) then {_friendlies pushback _x;};} foreach nearestObjects [getpos _unit, ["AllVehicles"], 50];
+		{if (side _x == _ms) then {_friendlies pushback _x;};} foreach nearestObjects [getpos _unit, ["AllVehicles"], 500];
 		_friendlies = [_friendlies, [], {_unit distance _x}] call BIS_fnc_sortBy;
 		if (count _friendlies > 1) then {
 			_grp = group (_friendlies select 1);
