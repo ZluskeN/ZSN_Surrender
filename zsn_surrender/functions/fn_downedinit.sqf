@@ -1,6 +1,7 @@
 if (isServer) then {
 	zsn_fleeingEH = {
 		params ["_group"];
+		if (side _group == CIVILIAN) exitwith {};
 		_group addEventHandler ["Fleeing", {
 			params ["_group", "_fleeingNow","_ms"];
 			_ms = side _group;
@@ -8,10 +9,12 @@ if (isServer) then {
 				[_group, _ms, "is fleeing!"] remoteexec ["zsn_fnc_hint"];
 				{
 					[_x, _ms] spawn {
-						params ["_unit","_ms",];
+						params ["_unit","_ms"];
 						_time = time;
 						waituntil {sleep random 4; ((([_unit, _ms] call zsn_fnc_findnearestenemy) || (time - _time > 600)) || ((!alive _unit) || (!fleeing _unit)))};
-						[_unit, _ms] remoteexec ["zsn_fnc_surrendercycle", _unit];
+						if ((alive _unit && fleeing _unit) && [_unit, _ms] call zsn_fnc_findnearestenemy) then {
+							[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
+						};
 					};
 				} forEach units _group;
 			};
@@ -25,7 +28,7 @@ if (isServer) then {
 	} foreach allGroups;
 	if (isClass(configFile >> "CfgPatches" >> "ace_medical_engine")) then {
 		["ace_unconscious", {
-			params ["_unit","_isUnconscious","_grp","_ms","_willdrop","_redeemable"];
+			params ["_unit","_isUnconscious","_grp","_ms","_willdrop"];
 			_grp = group _unit;
 			_ms = side _grp;
 			_willdrop = switch (ZSN_WeaponsDrop) do {
@@ -40,31 +43,29 @@ if (isServer) then {
 				if (isplayer _unit) then {
 					_unit remoteexec ["zsn_fnc_unconscious", _unit];
 				} else {
-					_unit setvariable ["ZSN_Group", _grp, true];
 					[_unit] joinsilent grpNull;
 				};
 			} else {
-				[_unit, _ms] remoteexec ["zsn_fnc_surrendercycle", _unit];
+				[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
 			};
 		}] call CBA_fnc_addEventHandler;
 	};
 	if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
 		["ace_captiveStatusChanged", {
 			params ["_unit", "_state", "_reason", "_caller"];
-			_grp = _unit getVariable "ZSN_Group";
-			_ms = side _grp;
+			_ms = _unit getVariable "ZSN_Side";
 			if (_ms == CIVILIAN) exitwith {};
 			if (_state) then {
 //				if (_reason == "SetHandcuffed") then {[_unit, "Acts_ExecutionVictim_Loop", 2] call ace_common_fnc_doAnimation}
 				[_unit, _ms] spawn {
 					params ["_unit", "_ms"];
-					waituntil {sleep 1; !([_unit, _ms] call zsn_fnc_findnearestenemy)}
+					waituntil {sleep 1; !([_unit, _ms] call zsn_fnc_findnearestenemy)};
 					if (!(_unit getVariable ["ace_captives_isHandcuffed", false])) then {
 						[_unit, false] call ace_captives_fnc_setSurrendered;
 					};
 				};
 			} else {
-				[_unit, _ms] remoteexec ["zsn_fnc_surrendercycle", _unit];
+				[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
 			};
 		}] call CBA_fnc_addEventHandler;
 	};

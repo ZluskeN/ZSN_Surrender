@@ -1,0 +1,7 @@
+///<'zsn_surrender.pbo' properties via Mikero's dos tools, dll version 6.44>///
+prefix=zsn_surrender
+Mikero=DePbo.dll.6.44
+version=23020322
+//Pbo Type is: Arma Addon
+//Sha: 'DF433F6F4EABCC3CE00E609B965D4619864D6DC9'
+//////</properties>//////

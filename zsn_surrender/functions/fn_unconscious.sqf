@@ -25,11 +25,11 @@ if (hasInterface) then {
 					ZSN_Loadout = getUnitLoadout [_oldplayer, true];
 					_unconAnim = animationState _oldplayer;
 					_medstate = [_oldplayer] call ace_medical_fnc_serializeState;
-					_oldgrp = group _oldplayer;
+					_side = side group _oldplayer;
 					
-					_newgrp = creategroup (side _oldgrp);
+					_newgrp = creategroup (_side);
 					(typeof _oldplayer) createUnit [[random 10, random 10, 0], _newgrp, "ZSN_newplayer = this; this setUnitLoadout [ZSN_Loadout, true]"];
-					ZSN_newplayer setvariable ["ZSN_Group", _oldgrp, true];
+					ZSN_newplayer setvariable ["ZSN_Side", _side, true];
 					ZSN_newplayer setFace face _oldplayer;
 					ZSN_newplayer setName name _oldplayer;
 					ZSN_newplayer setUnitRank rank _oldplayer;
@@ -53,4 +53,6 @@ if (hasInterface) then {
 			};	
 		};
 	};
+} else {
+	[_unit] joinsilent grpNull;
 };
