@@ -47,6 +47,10 @@ class CfgFunctions
 	{
 		class Functions
 		{
+			class setcontainercontents
+			{
+				file = "\zsn_surrender\functions\fn_setcontainercontents.sqf";
+			};
 			class surrenderInit
 			{
 				file = "\zsn_surrender\functions\fn_surrender_init.sqf";
@@ -58,6 +62,10 @@ class CfgFunctions
 			class Recover
 			{
 				file = "\zsn_surrender\functions\fn_recover.sqf";
+			};
+			class getcontainercontents
+			{
+				file = "\zsn_surrender\functions\fn_getcontainercontents.sqf";
 			};
 			class Hint
 			{

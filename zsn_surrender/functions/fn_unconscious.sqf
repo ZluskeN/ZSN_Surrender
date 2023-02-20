@@ -44,6 +44,7 @@ if (hasInterface) then {
 						deleteVehicle _oldObject;
 						_newObject removeEventHandler ["Respawn", _thisID];
 					}] call CBA_fnc_addBISEventHandler;
+					_oldplayer setcaptive false;
 					_oldplayer allowDamage true;
 					_oldplayer setDammage 1;
 					ZSN_newplayer setDir _dir;

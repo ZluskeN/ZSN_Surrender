@@ -24,6 +24,7 @@ if (ZSN_CreateBox) then {
 waitUntil {sleep 1; lifestate _unit != "INCAPACITATED"};
 _pos = getPos _unit;
 _dir = getDir _unit;
+[_unit] joinsilent grpNull;
 if (((lifestate _unit != "DEAD") && (isNull objectParent _unit)) && ((isClass(configFile >> "CfgPatches" >> "vurtual_seat")) && ZSN_SpawnStretcher)) then {
 	_stretcher = "vurtual_stretcher" createVehicle [random 10,random 10,0];
 	_unit assignAsCargo _stretcher; 
