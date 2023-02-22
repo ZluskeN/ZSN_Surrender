@@ -1,7 +1,8 @@
 if (isServer) then {
 	params ["_unit"];
-	if (_unit isKindOf "CAManBase" && side _unit != CIVILIAN) then {
-		_unit setvariable ["ZSN_Side", side _unit, true];
+	_side = side group _unit;
+	if (_unit isKindOf "CAManBase" && _side != CIVILIAN) then {
+		_unit setvariable ["ZSN_Side", _side, true];
 		_unit setvariable ["ZSN_isRedeemable", false, true];
 		if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
 			_unit addItem "ACE_CableTie";

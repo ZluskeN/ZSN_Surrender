@@ -20,4 +20,5 @@ if (!(hasinterface && isplayer _unit)) then {
 		_grp = group (_friendlies select 1);
 		[_unit] joinsilent _grp;
 	};
+	_unit setSuppression 0;
 };

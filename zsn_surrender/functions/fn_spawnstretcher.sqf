@@ -2,6 +2,7 @@ params ["_unit","_pos","_dir","_box","_backpack","_stretcher"];
 
 if (groupOwner group _unit != 2) then {group _unit setGroupOwner 2};
 _unit setvariable ["ZSN_isRedeemable", true, true];
+_unit call zsn_fnc_redeemer;
 if (ZSN_CreateBox) then {
 	_box = createVehicle ["Box_Syndicate_WpsLaunch_F", _pos, [], 0, "NONE"];
 	_box setDir (_dir + 90);
@@ -24,7 +25,6 @@ if (ZSN_CreateBox) then {
 waitUntil {sleep 1; lifestate _unit != "INCAPACITATED"};
 _pos = getPos _unit;
 _dir = getDir _unit;
-[_unit] joinsilent grpNull;
 if (((lifestate _unit != "DEAD") && (isNull objectParent _unit)) && ((isClass(configFile >> "CfgPatches" >> "vurtual_seat")) && ZSN_SpawnStretcher)) then {
 	_stretcher = "vurtual_stretcher" createVehicle [random 10,random 10,0];
 	_unit assignAsCargo _stretcher; 
@@ -35,10 +35,5 @@ if (((lifestate _unit != "DEAD") && (isNull objectParent _unit)) && ((isClass(co
 	_stretcher setVehiclePosition [_pos, [], 0, "CAN_COLLIDE"];
 };
 if ((lifestate _unit == "DEAD" && isNull objectParent _unit) && ZSN_BodyBags) then {
-//	[_unit, _unit] call ace_medical_treatment_fnc_placeInBodyBag;
-	hideBody _unit;
-	_bodyBag = "ACE_bodyBagObject" createVehicle [random 10,random 10,0];
-	_bodyBag setVehiclePosition [_pos, [], 0, "CAN_COLLIDE"];
-	_bodyBag setDir _dir;
-//	_bodyBag setvariable ["ZSN_isRedeemable", true, true];
+	[_unit, _unit] call ace_medical_treatment_fnc_placeInBodyBag;
 };

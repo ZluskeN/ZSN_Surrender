@@ -69,4 +69,11 @@ if (isServer) then {
 			};
 		}] call CBA_fnc_addEventHandler;
 	};
+	if (isClass(configFile >> "CfgPatches" >> "ace_medical_engine")) then {
+		["ace_placedInBodyBag", {
+			params ["_target", "_bodyBag"];
+			_bodyBag setvariable ["ZSN_isRedeemable", true, true];
+			_bodybag call zsn_fnc_redeemer;
+		}] call CBA_fnc_addEventHandler;
+	};
 };

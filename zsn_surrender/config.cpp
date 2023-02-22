@@ -79,6 +79,10 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_findNearestEnemy.sqf";
 			};
+			class redeemer
+			{
+				file = "\zsn_surrender\functions\fn_redeemer.sqf";
+			};
 			class spawnstretcher
 			{
 				file = "\zsn_surrender\functions\fn_spawnstretcher.sqf";
