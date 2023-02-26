@@ -40,11 +40,7 @@ if (isServer) then {
 			if (_isUnconscious) then {
 				_unit setCaptive true;
 				if (primaryweapon _unit != "" && _willdrop) then {_unit call ace_hitreactions_fnc_throwWeapon};
-				if (isplayer _unit) then {
-					_unit remoteexec ["zsn_fnc_unconscious", _unit];
-				} else {
-					[_unit] joinsilent grpNull;
-				};
+				_unit remoteexec ["zsn_fnc_unconscious", _unit];
 			} else {
 				[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
 			};
@@ -56,12 +52,17 @@ if (isServer) then {
 			_ms = _unit getVariable "ZSN_Side";
 			if (_ms == CIVILIAN) exitwith {};
 			if (_state) then {
-//				if (_reason == "SetHandcuffed") then {[_unit, "Acts_ExecutionVictim_Loop", 2] call ace_common_fnc_doAnimation}
-				[_unit, _ms] spawn {
-					params ["_unit", "_ms"];
-					waituntil {sleep 1; !([_unit, _ms] call zsn_fnc_findnearestenemy)};
-					if (!(_unit getVariable ["ace_captives_isHandcuffed", false])) then {
-						[_unit, false] call ace_captives_fnc_setSurrendered;
+				if (_reason == "SetHandcuffed") then {
+					_unit setCaptive true;
+					_unit call ace_hitreactions_fnc_throwWeapon;
+					_unit remoteexec ["zsn_fnc_unconscious", _unit];
+				} else {
+					[_unit, _ms] spawn {
+						params ["_unit", "_ms"];
+						waituntil {sleep 1; !([_unit, _ms] call zsn_fnc_findnearestenemy)};
+						if (!(_unit getVariable ["ace_captives_isHandcuffed", false])) then {
+							[_unit, false] call ace_captives_fnc_setSurrendered;
+						};
 					};
 				};
 			} else {
@@ -72,8 +73,14 @@ if (isServer) then {
 	if (isClass(configFile >> "CfgPatches" >> "ace_medical_engine")) then {
 		["ace_placedInBodyBag", {
 			params ["_target", "_bodyBag"];
-			_bodyBag setvariable ["ZSN_isRedeemable", true, true];
-			_bodybag call zsn_fnc_redeemer;
+			if (_target getVariable ["ZSN_isRedeemable", false]) then {
+				_bodyBag setvariable ["ZSN_isRedeemable", true, true];
+				if (isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
+					_bodybag call zsn_fnc_redeemer;
+				};
+			};
+			_objs = nearestObjects [getpos _bodyBag, ["Allvehicles"], 10];
+			{if ([_bodyBag, _x, true] call ace_cargo_fnc_canLoadItemIn) exitWith {[_bodybag, _x, true] call ace_cargo_fnc_loadItem}} foreach _objs;
 		}] call CBA_fnc_addEventHandler;
 	};
 };

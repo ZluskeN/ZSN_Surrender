@@ -18,81 +18,90 @@ if (!isNil {missionnamespace getvariable "zsn_east_collector"}) then {_flags pus
 if (!isNil {missionnamespace getvariable "zsn_guer_collector"}) then {_flags pushBack [missionnamespace getvariable "zsn_guer_collector", resistance]};
 if (!isNil {missionnamespace getvariable "zsn_civ_collector"}) then {_flags pushBack [missionnamespace getvariable "zsn_civ_collector", civilian]};
 
-
-[_unit, _flags] spawn {
-	params ["_unit","_flags","_tickets"];
-	waituntil {
-		{
-			sleep 1;
-			_flag = _x select 0;
-			if (!alive _unit) exitwith {true};
-			[_flag, (_unit distance _flag), _unit] call zsn_fnc_hint;
-			_bool = if (_flag iskindof "FlagCarrier") then {_unit distance _flag < 10} else {(_unit in crew _flag) OR (_unit in (_flag getVariable "ace_cargo_loaded"))};
-			if (_bool) exitWith {
-				switch (toLower str (_x select 1)) do {
-					case "west": {
-						_carrier = _unit getVariable "ace_common_owner";
-						if (_carrier getVariable "ace_dragging_isDragging") then {[_carrier, _unit] call ace_dragging_fnc_dropObject};
-						if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
-						_tickets = missionnamespace getvariable "tun_respawn_tickets_west";
-						if (_unit iskindof "Man" && alive _unit) then {
-							missionnamespace setvariable ["tun_respawn_tickets_west", (_tickets + ZSN_RedeemLiving), true];
-							["Live unit redeemed for", ZSN_RedeemLiving, "tickets"] remoteexec ["zsn_fnc_hint"];
-						} else {
-							missionnamespace setvariable ["tun_respawn_tickets_west", (_tickets + ZSN_RedeemDead), true];
-							["Dead unit redeemed for", ZSN_RedeemDead, "tickets"] remoteexec ["zsn_fnc_hint"];
+if (count _flags > 0) then {
+	[_unit, _flags] spawn {
+		params ["_unit","_flags","_tickets"];
+		waituntil {
+			{
+				sleep 1;
+				_flag = _x select 0;
+				if (!alive _unit) exitwith {true};
+				[_flag, (_unit distance _flag), _unit] call zsn_fnc_hint;
+				_bool = if (_flag iskindof "FlagCarrier") then {_unit distance _flag < 10} else {(_unit in crew _flag) OR (_unit in (_flag getVariable "ace_cargo_loaded"))};
+				if (_bool) exitWith {
+					switch (toLower str (_x select 1)) do {
+						case "west": {
+							if (!isnull (_unit getVariable "ace_common_owner")) then {
+								_carrier = _unit getVariable "ace_common_owner";
+								if (_carrier getVariable "ace_dragging_isDragging") then {[_carrier, _unit] call ace_dragging_fnc_dropObject};
+								if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
+							};
+							_tickets = missionnamespace getvariable "tun_respawn_tickets_west";
+							if (_unit iskindof "Man" && alive _unit) then {
+								missionnamespace setvariable ["tun_respawn_tickets_west", (_tickets + ZSN_RedeemLiving), true];
+								["Live unit redeemed for", ZSN_RedeemLiving, "tickets"] remoteexec ["zsn_fnc_hint"];
+							} else {
+								missionnamespace setvariable ["tun_respawn_tickets_west", (_tickets + ZSN_RedeemDead), true];
+								["Dead unit redeemed for", ZSN_RedeemDead, "tickets"] remoteexec ["zsn_fnc_hint"];
+							};
+							deletevehicle _unit;
+							true
 						};
-						deletevehicle _unit;
-						true
-					};
-					case "east": {
-						_carrier = _unit getVariable "ace_common_owner";
-						if (_carrier getVariable "ace_dragging_isDragging") then {[_carrier, _unit] call ace_dragging_fnc_dropObject};
-						if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
-						_tickets = missionnamespace getvariable "tun_respawn_tickets_east";
-						if (_unit iskindof "Man" && alive _unit) then {
-							missionnamespace setvariable ["tun_respawn_tickets_east", (_tickets + ZSN_RedeemLiving), true];
-							["Live unit redeemed for", ZSN_RedeemLiving, "tickets"] remoteexec ["zsn_fnc_hint"];
-						} else {
-							missionnamespace setvariable ["tun_respawn_tickets_east", (_tickets + ZSN_RedeemDead), true];
-							["Dead unit redeemed for", ZSN_RedeemDead, "tickets"] remoteexec ["zsn_fnc_hint"];
+						case "east": {
+							if (!isnull (_unit getVariable "ace_common_owner")) then {
+								_carrier = _unit getVariable "ace_common_owner";
+								if (_carrier getVariable "ace_dragging_isDragging") then {[_carrier, _unit] call ace_dragging_fnc_dropObject};
+								if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
+							};
+							_tickets = missionnamespace getvariable "tun_respawn_tickets_east";
+							if (_unit iskindof "Man" && alive _unit) then {
+								missionnamespace setvariable ["tun_respawn_tickets_east", (_tickets + ZSN_RedeemLiving), true];
+								["Live unit redeemed for", ZSN_RedeemLiving, "tickets"] remoteexec ["zsn_fnc_hint"];
+							} else {
+								missionnamespace setvariable ["tun_respawn_tickets_east", (_tickets + ZSN_RedeemDead), true];
+								["Dead unit redeemed for", ZSN_RedeemDead, "tickets"] remoteexec ["zsn_fnc_hint"];
+							};
+							deletevehicle _unit;
+							true
 						};
-						deletevehicle _unit;
-						true
-					};
-					case "resistance": {
-						_carrier = _unit getVariable "ace_common_owner";
-						if (_carrier getVariable "ace_dragging_isDragging") then {[_carrier, _unit] call ace_dragging_fnc_dropObject};
-						if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
-						_tickets = missionnamespace getvariable "tun_respawn_tickets_guer";
-						if (_unit iskindof "Man" && alive _unit) then {
-							missionnamespace setvariable ["tun_respawn_tickets_guer", (_tickets + ZSN_RedeemLiving), true];
-							["Live unit redeemed for", ZSN_RedeemLiving, "tickets"] remoteexec ["zsn_fnc_hint"];
-						} else {
-							missionnamespace setvariable ["tun_respawn_tickets_guer", (_tickets + ZSN_RedeemDead), true];
-							["Dead unit redeemed for", ZSN_RedeemDead, "tickets"] remoteexec ["zsn_fnc_hint"];
+						case "resistance": {
+							if (!isnull (_unit getVariable "ace_common_owner")) then {
+								_carrier = _unit getVariable "ace_common_owner";
+								if (_carrier getVariable "ace_dragging_isDragging") then {[_carrier, _unit] call ace_dragging_fnc_dropObject};
+								if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
+							};
+							_tickets = missionnamespace getvariable "tun_respawn_tickets_guer";
+							if (_unit iskindof "Man" && alive _unit) then {
+								missionnamespace setvariable ["tun_respawn_tickets_guer", (_tickets + ZSN_RedeemLiving), true];
+								["Live unit redeemed for", ZSN_RedeemLiving, "tickets"] remoteexec ["zsn_fnc_hint"];
+							} else {
+								missionnamespace setvariable ["tun_respawn_tickets_guer", (_tickets + ZSN_RedeemDead), true];
+								["Dead unit redeemed for", ZSN_RedeemDead, "tickets"] remoteexec ["zsn_fnc_hint"];
+							};
+							deletevehicle _unit;
+							true
 						};
-						deletevehicle _unit;
-						true
-					};
-					case "civilian": {
-						_carrier = _unit getVariable "ace_common_owner";
-						if (_carrier getVariable "ace_dragging_isDragging") then {[_carrier, _unit] call ace_dragging_fnc_dropObject};
-						if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
-						_tickets = missionnamespace getvariable "tun_respawn_tickets_civ";
-						if (_unit iskindof "Man" && alive _unit) then {
-							missionnamespace setvariable ["tun_respawn_tickets_civ", (_tickets + ZSN_RedeemLiving), true];
-							["Live unit redeemed for", ZSN_RedeemLiving, "tickets"] remoteexec ["zsn_fnc_hint"];
-						} else {
-							missionnamespace setvariable ["tun_respawn_tickets_civ", (_tickets + ZSN_RedeemDead), true];
-							["Dead unit redeemed for", ZSN_RedeemDead, "tickets"] remoteexec ["zsn_fnc_hint"];
+						case "civilian": {
+							if (!isnull (_unit getVariable "ace_common_owner")) then {
+								_carrier = _unit getVariable "ace_common_owner";
+								if (_carrier getVariable "ace_dragging_isDragging") then {[_carrier, _unit] call ace_dragging_fnc_dropObject};
+								if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
+							};
+							_tickets = missionnamespace getvariable "tun_respawn_tickets_civ";
+							if (_unit iskindof "Man" && alive _unit) then {
+								missionnamespace setvariable ["tun_respawn_tickets_civ", (_tickets + ZSN_RedeemLiving), true];
+								["Live unit redeemed for", ZSN_RedeemLiving, "tickets"] remoteexec ["zsn_fnc_hint"];
+							} else {
+								missionnamespace setvariable ["tun_respawn_tickets_civ", (_tickets + ZSN_RedeemDead), true];
+								["Dead unit redeemed for", ZSN_RedeemDead, "tickets"] remoteexec ["zsn_fnc_hint"];
+							};
+							deletevehicle _unit;
+							true
 						};
-						deletevehicle _unit;
-						true
 					};
 				};
-			};
-			false
-		} foreach _flags;
+				false
+			} foreach _flags;
+		};
 	};
 };
