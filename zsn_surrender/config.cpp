@@ -47,6 +47,10 @@ class CfgFunctions
 	{
 		class Functions
 		{
+			class addtuntickets
+			{
+				file = "\zsn_surrender\functions\fn_addtuntickets.sqf";
+			};
 			class setcontainercontents
 			{
 				file = "\zsn_surrender\functions\fn_setcontainercontents.sqf";

@@ -1,25 +1,17 @@
 params ["_unit","_delay","_mytime"];
 
 if (isplayer _unit && hasInterface) then {
-	_delay = ZSN_UnconsciousTimer;
-	_mytime = time + _delay;
-	waituntil {time >= _mytime};
-	switch (lifestate _unit) do {
-		case "INCAPACITATED": {
-			if (_unit getVariable "ace_isunconscious") then {
-				switch (ZSN_UnconsciousAction) do {
-					case "Nothing": {};
-					case "Spectator": {
-						titleText ["", "BLACK OUT"];
-						["Initialize",[_unit, [playerside], false, false, true, true, true, true, true, true]] call BIS_fnc_EGSpectator;
-						titleText ["", "BLACK IN"];
-						waituntil {sleep 1; !(_unit getVariable "ace_isunconscious")};
-						titleText ["", "BLACK OUT"];
-						["Terminate"] call BIS_fnc_EGSpectator;
-						titleText ["", "BLACK IN"];
-					};
-					case "Respawn": {
+	if (ZSN_UnconsciousAction) then {
+		_delay = ZSN_UnconsciousTimer;
+		_mytime = time + _delay;
+		[{time >= (_this select 1)}, {
+			params ["_unit","_mytime"];
+			switch (lifestate _unit) do {
+				case "INCAPACITATED": {
+					if (_unit getVariable "ace_isunconscious") then {
 						_oldplayer = _unit;
+						titleText ["", "BLACK OUT"];
+						_oldplayer allowDamage false;
 						_pos = getPos _oldplayer;
 						_dir = getDir _oldplayer;
 						_loadOut = getUnitLoadout [_oldplayer, true];
@@ -37,7 +29,7 @@ if (isplayer _unit && hasInterface) then {
 						removeGoggles ZSN_newplayer; ZSN_newplayer addGoggles goggles _oldplayer;
 						ZSN_newplayer setUnconscious true;
 						[ZSN_newplayer, _medstate] call ace_medical_fnc_deserializeState;
-						if (isNull objectParent _oldplayer) then {
+						if (vehicle _oldplayer == _oldplayer) then {
 							[ZSN_newplayer, _unconAnim, 2] call ace_common_fnc_doAnimation;
 							_oldplayer setPos [random 10, random 10, 0];
 							ZSN_newplayer setDir _dir;
@@ -56,32 +48,20 @@ if (isplayer _unit && hasInterface) then {
 						[_oldplayer, "Respawn", {
 							params ["_newObject","_oldObject"];
 							deleteVehicle _oldObject;
+							titleText ["", "BLACK IN"];
 							_newObject removeEventHandler ["Respawn", _thisID];
 						}] call CBA_fnc_addBISEventHandler;
 						_oldplayer setcaptive false;
 						_oldplayer allowDamage true;
 						_oldplayer setDammage 1;
-						[ZSN_newplayer, _pos, _dir] remoteexec ["zsn_fnc_spawnstretcher", 2];
-					};
-				};	
-			};
-		};
-		case "HEALTHY": {
-			if (_unit getVariable "ace_captives_isHandcuffed") then {
-				switch (ZSN_UnconsciousAction) do {
-					case "Nothing": {};
-					case "Spectator": {
-						titleText ["", "BLACK OUT"];
-						["Initialize",[_unit, [playerside], false, false, true, true, true, true, true, true]] call BIS_fnc_EGSpectator;
-						titleText ["", "BLACK IN"];
-						waituntil {sleep 1; !(_unit getVariable "ace_captives_isHandcuffed")};
-						titleText ["", "BLACK OUT"];
-						["Terminate"] call BIS_fnc_EGSpectator;
-						titleText ["", "BLACK IN"];
-					};
-					case "Respawn": {
-						sleep 5; 
+						[ZSN_newplayer, _pos, _dir] remoteexecCall ["zsn_fnc_spawnstretcher", 2];
+					};	
+				};
+				case "HEALTHY": {
+					if (_unit getVariable "ace_captives_isHandcuffed") then {
 						_oldplayer = _unit;
+						titleText ["", "BLACK OUT"];
+						_oldplayer allowDamage false;
 						_pos = getPos _oldplayer;
 						_dir = getDir _oldplayer;
 						_loadOut = getUnitLoadout [_oldplayer, true];
@@ -99,7 +79,7 @@ if (isplayer _unit && hasInterface) then {
 						removeGoggles ZSN_newplayer; ZSN_newplayer addGoggles goggles _oldplayer;
 						[ZSN_newplayer, true, ZSN_newplayer] call ACE_captives_fnc_setHandcuffed;
 						[ZSN_newplayer, _medstate] call ace_medical_fnc_deserializeState;
-						if (isNull objectParent _oldplayer) then {
+						if (vehicle _oldplayer == _oldplayer) then {
 							[ZSN_newplayer, _unconAnim, 2] call ace_common_fnc_doAnimation;
 							_oldplayer setPos [random 10, random 10, 0];
 							ZSN_newplayer setDir _dir;
@@ -115,20 +95,23 @@ if (isplayer _unit && hasInterface) then {
 								};
 							} foreach _crew;
 						};
+						if (isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
+							[_side, 1] remoteexecCall ["zsn_fnc_addtuntickets", 2];
+						};
 						[_oldplayer, "Respawn", {
 							params ["_newObject","_oldObject"];
 							deleteVehicle _oldObject;
+							titleText ["", "BLACK IN"];
 							_newObject removeEventHandler ["Respawn", _thisID];
 						}] call CBA_fnc_addBISEventHandler;
 						_oldplayer setcaptive false;
 						_oldplayer allowDamage true;
 						_oldplayer setDammage 1;
-						[ZSN_newplayer, _pos, _dir] remoteexec ["zsn_fnc_spawnstretcher", 2];
+						[ZSN_newplayer, _pos, _dir] remoteexecCall ["zsn_fnc_spawnstretcher", 2];
 					};
 				};
 			};
-		};
-		default {};
+		}, [_unit, _mytime]] call CBA_fnc_waitUntilAndExecute;
 	};
 } else {
 	[_unit] joinsilent grpNull;

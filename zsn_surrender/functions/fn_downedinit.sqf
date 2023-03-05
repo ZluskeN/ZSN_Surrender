@@ -39,8 +39,8 @@ if (isServer) then {
 			if (_ms == CIVILIAN) exitwith {};
 			if (_isUnconscious) then {
 				_unit setCaptive true;
-				if (primaryweapon _unit != "" && _willdrop) then {_unit call ace_hitreactions_fnc_throwWeapon};
-				_unit remoteexec ["zsn_fnc_unconscious", _unit];
+				if (primaryweapon _unit != "" && _willdrop) then {_unit remoteexecCall ["ace_hitreactions_fnc_throwWeapon", _unit]};
+				_unit remoteexecCall ["zsn_fnc_unconscious", _unit];
 			} else {
 				[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
 			};
@@ -54,8 +54,7 @@ if (isServer) then {
 			if (_state) then {
 				if (_reason == "SetHandcuffed") then {
 					_unit setCaptive true;
-					_unit call ace_hitreactions_fnc_throwWeapon;
-					_unit remoteexec ["zsn_fnc_unconscious", _unit];
+					_unit remoteexecCall ["zsn_fnc_unconscious", _unit];
 				} else {
 					[_unit, _ms] spawn {
 						params ["_unit", "_ms"];
@@ -76,7 +75,7 @@ if (isServer) then {
 			if (_target getVariable ["ZSN_isRedeemable", false]) then {
 				_bodyBag setvariable ["ZSN_isRedeemable", true, true];
 				if (isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
-					_bodybag call zsn_fnc_redeemer;
+					_bodybag spawn zsn_fnc_redeemer;
 				};
 			};
 			_objs = nearestObjects [getpos _bodyBag, ["Allvehicles"], 10];
