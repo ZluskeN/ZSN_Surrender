@@ -54,7 +54,7 @@ if (isplayer _unit && hasInterface) then {
 						_oldplayer setcaptive false;
 						_oldplayer allowDamage true;
 						_oldplayer setDammage 1;
-						[ZSN_newplayer, _pos, _dir] remoteexecCall ["zsn_fnc_spawnstretcher", 2];
+						[ZSN_newplayer] remoteexecCall ["zsn_fnc_spawnstretcher", 2];
 					};	
 				};
 				case "HEALTHY": {
@@ -107,7 +107,7 @@ if (isplayer _unit && hasInterface) then {
 						_oldplayer setcaptive false;
 						_oldplayer allowDamage true;
 						_oldplayer setDammage 1;
-						[ZSN_newplayer, _pos, _dir] remoteexecCall ["zsn_fnc_spawnstretcher", 2];
+						[ZSN_newplayer] remoteexecCall ["zsn_fnc_spawnstretcher", 2];
 					};
 				};
 			};

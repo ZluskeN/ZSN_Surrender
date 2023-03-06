@@ -1,5 +1,7 @@
 params ["_unit","_pos","_dir","_box","_backpack","_stretcher"]; 
 
+_pos = getPos _unit;
+_dir = getDir _unit;
 if (groupOwner group _unit != 2) then {group _unit setGroupOwner 2};
 _unit setvariable ["ZSN_isRedeemable", true, true];
 if (isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
