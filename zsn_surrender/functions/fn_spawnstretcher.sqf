@@ -1,7 +1,5 @@
-params ["_unit","_pos","_dir","_box","_backpack","_stretcher"]; 
+params ["_unit","_box","_backpack","_stretcher"]; 
 
-_pos = getPos _unit;
-_dir = getDir _unit;
 if (groupOwner group _unit != 2) then {group _unit setGroupOwner 2};
 _unit setvariable ["ZSN_isRedeemable", true, true];
 if (isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
@@ -9,24 +7,24 @@ if (isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
 };
 if (ZSN_CreateBox) then {
 	_box = createVehicle ["Box_Syndicate_WpsLaunch_F", [random 10, random 10, 0], [], 0, "NONE"];
-	clearWeaponCargo _box;
-	clearMagazineCargo _box;
-	clearItemCargo _box;
-	clearBackpackCargo _box;
+	clearWeaponCargoGlobal _box;
+	clearMagazineCargoGlobal _box;
+	clearItemCargoGlobal _box;
+	clearBackpackCargoGlobal _box;
 	{_box addWeaponWithAttachmentsCargoGlobal [_x, 1]; _unit removeWeaponGlobal (_x select 0)} forEach (weaponsItems _unit);
 	{_box addMagazineAmmoCargo [_x select 0, 1, _x select 1]; [_unit, _x select 0, _x select 1] call CBA_fnc_removeMagazine;} forEach (magazinesAmmo _unit);
 	{_box addItemCargoGlobal [_x, 1]; _unit removeitem _x} forEach (Items _unit);
 	if (ZSN_IncludeLinked) then {{_box addItemCargoGlobal [_x, 1]; _unit unlinkItem _x;} forEach (assignedItems _unit)};
-	if (Backpack _unit != "") then {_box addBackpackCargo [(Backpack _unit), 1]};
-	removebackpack _unit;
+	if (Backpack _unit != "") then {_box addBackpackCargoGlobal [(Backpack _unit), 1]};
+	removeBackpackGlobal _unit;
 	_backpack = firstBackpack _box;
-	clearItemCargo _backpack;
-	clearWeaponCargo _backpack;
-	clearMagazineCargo _backpack;
+	clearItemCargoGlobal _backpack;
+	clearWeaponCargoGlobal _backpack;
+	clearMagazineCargoGlobal _backpack;
 	_box spawn zsn_fnc_transferloop;
 	if (isNull objectParent _unit) then {
-		_box setDir (_dir + 90);
-		_box setVehiclePosition [_pos, [], 0, "NONE"];
+		_box setDir (getDir _unit + 90);
+		_box setVehiclePosition [_unit, [], 0, "NONE"];
 	} else {
 		_vehicle = vehicle _unit;
 		[_box, _vehicle, true] call ace_cargo_fnc_loadItem;

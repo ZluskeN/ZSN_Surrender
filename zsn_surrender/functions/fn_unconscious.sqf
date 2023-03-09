@@ -14,21 +14,21 @@ if (isplayer _unit && hasInterface) then {
 						_oldplayer allowDamage false;
 						_pos = getPos _oldplayer;
 						_dir = getDir _oldplayer;
-						_loadOut = getUnitLoadout [_oldplayer, true];
+						ZSN_loadOut = getUnitLoadout _oldplayer;
+						ZSN_medstate = [_oldplayer] call ace_medical_fnc_serializeState;
 						_unconAnim = animationState _oldplayer;
-						_medstate = [_oldplayer] call ace_medical_fnc_serializeState;
 						_side = side group _oldplayer;
 						
 						_newgrp = creategroup (_side);
-						(typeof _oldplayer) createUnit [[random 10, random 10, 0], _newgrp, "ZSN_newplayer = this"];
-						ZSN_newplayer setUnitLoadout [_loadOut, true];
+						(typeof _oldplayer) createUnit [[random 10, random 10, 0], _newgrp, "ZSN_newplayer = this; this setUnitLoadout ZSN_loadOut; [this, ZSN_medstate] call ace_medical_fnc_deserializeState;"];
+						ZSN_newplayer setUnconscious true;
+						ZSN_newplayer setcaptive true;
 						ZSN_newplayer setvariable ["ZSN_Side", _side, true];
 						ZSN_newplayer setFace face _oldplayer;
 						ZSN_newplayer setName name _oldplayer;
 						ZSN_newplayer setUnitRank rank _oldplayer;
 						removeGoggles ZSN_newplayer; ZSN_newplayer addGoggles goggles _oldplayer;
-						ZSN_newplayer setUnconscious true;
-						[ZSN_newplayer, _medstate] call ace_medical_fnc_deserializeState;
+						
 						if (vehicle _oldplayer == _oldplayer) then {
 							[ZSN_newplayer, _unconAnim, 2] call ace_common_fnc_doAnimation;
 							_oldplayer setPos [random 10, random 10, 0];
@@ -64,21 +64,20 @@ if (isplayer _unit && hasInterface) then {
 						_oldplayer allowDamage false;
 						_pos = getPos _oldplayer;
 						_dir = getDir _oldplayer;
-						_loadOut = getUnitLoadout [_oldplayer, true];
+						ZSN_loadOut = getUnitLoadout _oldplayer;
 						_unconAnim = animationState _oldplayer;
-						_medstate = [_oldplayer] call ace_medical_fnc_serializeState;
+						ZSN_medstate = [_oldplayer] call ace_medical_fnc_serializeState;
 						_side = side group _oldplayer;
 						
 						_newgrp = creategroup (_side);
-						(typeof _oldplayer) createUnit [[random 10, random 10, 0], _newgrp, "ZSN_newplayer = this"];
-						ZSN_newplayer setUnitLoadout [_loadOut, true];
+						(typeof _oldplayer) createUnit [[random 10, random 10, 0], _newgrp, "ZSN_newplayer = this; this setUnitLoadout ZSN_loadOut; [this, ZSN_medstate] call ace_medical_fnc_deserializeState;"];
+						[ZSN_newplayer, true, ZSN_newplayer] call ACE_captives_fnc_setHandcuffed;
+						ZSN_newplayer setcaptive true;
 						ZSN_newplayer setvariable ["ZSN_Side", _side, true];
 						ZSN_newplayer setFace face _oldplayer;
 						ZSN_newplayer setName name _oldplayer;
 						ZSN_newplayer setUnitRank rank _oldplayer;
 						removeGoggles ZSN_newplayer; ZSN_newplayer addGoggles goggles _oldplayer;
-						[ZSN_newplayer, true, ZSN_newplayer] call ACE_captives_fnc_setHandcuffed;
-						[ZSN_newplayer, _medstate] call ace_medical_fnc_deserializeState;
 						if (vehicle _oldplayer == _oldplayer) then {
 							[ZSN_newplayer, _unconAnim, 2] call ace_common_fnc_doAnimation;
 							_oldplayer setPos [random 10, random 10, 0];
