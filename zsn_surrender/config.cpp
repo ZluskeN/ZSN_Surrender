@@ -47,11 +47,11 @@ class CfgFunctions
 	{
 		class Functions
 		{
-			class addtuntickets
+			class addTunTickets
 			{
 				file = "\zsn_surrender\functions\fn_addtuntickets.sqf";
 			};
-			class setcontainercontents
+			class setContainerContents
 			{
 				file = "\zsn_surrender\functions\fn_setcontainercontents.sqf";
 			};
@@ -63,15 +63,19 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_surrender_cycle.sqf";
 			};
-			class Recover
+			class recover
 			{
 				file = "\zsn_surrender\functions\fn_recover.sqf";
 			};
-			class getcontainercontents
+			class replacePlayer
+			{
+				file = "\zsn_surrender\functions\fn_replacePlayer.sqf";
+			};
+			class getContainerContents
 			{
 				file = "\zsn_surrender\functions\fn_getcontainercontents.sqf";
 			};
-			class Hint
+			class hint
 			{
 				file = "\zsn_surrender\functions\fn_hint.sqf";
 			};
@@ -87,7 +91,7 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_redeemer.sqf";
 			};
-			class spawnstretcher
+			class spawnStretcher
 			{
 				file = "\zsn_surrender\functions\fn_spawnstretcher.sqf";
 			};
@@ -95,11 +99,11 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_unconscious.sqf";
 			};
-			class transfercontents
+			class transferContents
 			{
 				file = "\zsn_surrender\functions\fn_transfercontents.sqf";
 			};
-			class transferloop
+			class transferLoop
 			{
 				file = "\zsn_surrender\functions\fn_transferloop.sqf";
 			};

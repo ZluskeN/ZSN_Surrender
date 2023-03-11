@@ -3,10 +3,11 @@ if (isServer) then {
 	_side = side group _unit;
 	if (_unit isKindOf "CAManBase" && _side != CIVILIAN) then {
 		_unit setvariable ["ZSN_Side", _side, true];
-		_unit setvariable ["ZSN_isRedeemable", false, true];
-		if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
-			_unit addItem "ACE_CableTie";
-		};
+		{
+			while {_item = (_x select 0); ({_x == _item} count items _unit) < (_x select 1)} do {
+				_unit addItem (_x select 0);	
+			};
+		} forEach [["ACE_CableTie",1]];
 		_unit addEventHandler ["GetOutMan", {
 			params ["_unit", "_role", "_vehicle"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {

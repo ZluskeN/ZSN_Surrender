@@ -2,7 +2,7 @@ params ["_unit","_ms","_mg","_friendlies","_grp","_containers","_container","_bo
 if (!(hasinterface && isplayer _unit)) then {
 	_unit setCaptive false;
 	_unit setSuppression 0;
-	if (_unit getvariable "ZSN_isRedeemable" && isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
+	if (_unit getvariable ["ZSN_isRedeemable",false] && isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
 //		if (isClass(configFile >> "CfgPatches" >> "vurtual_seat") && ZSN_SpawnStretcher) then {
 //			if (((lifestate _unit != "DEAD") && (isNull objectParent _unit)) && ) then {
 //				_pos = getPos _unit;
