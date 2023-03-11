@@ -16,7 +16,8 @@ ZSN_newunit setName [name _oldunit,"",name _oldunit];
 ZSN_newunit setUnitRank rank _oldunit;
 ZSN_newunit setvariable ["ZSN_Side", _side, true];
 if (_lifestate == "INCAPACITATED") then {
-	[ZSN_newunit, true] call ace_medical_fnc_setUnconscious;
+	[ZSN_newunit, true, 3600] call ace_medical_fnc_setUnconscious;
+	[ZSN_newunit, true] call ace_medical_engine_fnc_setUnconsciousAnim;
 } else {
 	[ZSN_newunit, true, ZSN_newunit] call ACE_captives_fnc_setHandcuffed;
 };

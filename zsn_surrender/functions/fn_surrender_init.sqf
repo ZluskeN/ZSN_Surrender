@@ -8,6 +8,12 @@ if (isServer) then {
 				_unit addItem (_x select 0);	
 			};
 		} forEach [["ACE_CableTie",1]];
+//		_unit addEventHandler ["Killed", {
+//			params ["_unit", "_killer", "_instigator", "_useEffects"];
+//			if (ZSN_BodyBags && _unit == ACE_player) then {
+//				[_instigator, _unit] call ace_medical_treatment_fnc_placeInBodyBag;
+//			};
+//		}];
 		_unit addEventHandler ["GetOutMan", {
 			params ["_unit", "_role", "_vehicle"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {
