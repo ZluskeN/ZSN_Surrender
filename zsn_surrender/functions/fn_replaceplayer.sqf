@@ -20,6 +20,7 @@ if (_lifestate == "INCAPACITATED") then {
 	[ZSN_newunit, true] call ace_medical_engine_fnc_setUnconsciousAnim;
 } else {
 	[ZSN_newunit, true, ZSN_newunit] call ACE_captives_fnc_setHandcuffed;
+	[_side, 1] Call zsn_fnc_addtuntickets;
 };
 if (vehicle _oldunit == _oldunit) then {
 	if (!isnull (_oldunit getVariable "ace_common_owner")) then {

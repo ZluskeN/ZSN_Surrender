@@ -23,9 +23,9 @@ waituntil {
 				if (_carrier getVariable "ace_dragging_isCarrying") then {[_carrier, _unit] call ace_dragging_fnc_dropObject_carry};
 			};
 			if (_unit iskindof "Man" && alive _unit) then {
-				[_x select 1, 2] remoteexecCall ["zsn_fnc_addtuntickets", 2];
+				[_x select 1, ZSN_RedeemLiving] Call zsn_fnc_addtuntickets;
 			} else {
-				[_x select 1, 1] remoteexecCall ["zsn_fnc_addtuntickets", 2];
+				[_x select 1, ZSN_RedeemDead] Call zsn_fnc_addtuntickets;
 			};
 			deletevehicle _unit;
 			true

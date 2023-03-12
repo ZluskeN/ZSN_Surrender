@@ -30,8 +30,12 @@ if (ZSN_CreateBox) then {
 	};
 };
 if (ZSN_BodyBags) then {
-	_unit addEventHandler ["Killed", {
-		params ["_unit", "_killer", "_instigator", "_useEffects"];
+	if (alive _unit) then {
+		_unit addEventHandler ["Killed", {
+			params ["_unit", "_killer", "_instigator", "_useEffects"];
+			[_unit, _unit] call ace_medical_treatment_fnc_placeInBodyBag;
+		}];
+	} else {
 		[_unit, _unit] call ace_medical_treatment_fnc_placeInBodyBag;
-	}];
+	};
 };
