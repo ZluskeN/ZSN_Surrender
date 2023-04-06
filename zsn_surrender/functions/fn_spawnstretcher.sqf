@@ -22,11 +22,11 @@ if (_unit distance [0,0,0] > 15) then {
 		clearWeaponCargoGlobal _backpack;
 		clearMagazineCargoGlobal _backpack;
 		_box spawn zsn_fnc_transferloop;
-		if (isNull objectParent _unit) then {
+		_vehicle = vehicle _unit;
+		if (_vehicle == _unit) then {
 			_box setDir (getDir _unit + 90);
 			_box setVehiclePosition [_unit, [], 0, "NONE"];
 		} else {
-			_vehicle = vehicle _unit;
 			[_box, _vehicle, true] call ace_cargo_fnc_loadItem;
 		};
 	};

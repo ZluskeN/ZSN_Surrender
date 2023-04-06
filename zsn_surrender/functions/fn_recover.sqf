@@ -3,20 +3,6 @@ if (!(hasinterface && isplayer _unit)) then {
 	_unit setCaptive false;
 	_unit setSuppression 0;
 	if (_unit getvariable ["ZSN_isRedeemable",false] && isClass(configFile >> "CfgPatches" >> "Tun_Respawn")) then {
-//		if (isClass(configFile >> "CfgPatches" >> "vurtual_seat") && ZSN_SpawnStretcher) then {
-//			if (((lifestate _unit != "DEAD") && (isNull objectParent _unit)) && ) then {
-//				_pos = getPos _unit;
-//				_dir = getDir _unit;
-//				_stretcher = "vurtual_stretcher" createVehicle [random 10,random 10,0];
-//				_unit assignAsCargo _stretcher; 
-//				_unit moveincargo _stretcher; 
-//				_unit setcaptive true;
-//				_stretcher lock true; 
-//				_stretcher setDir _dir;
-//				_stretcher setVehiclePosition [_pos, [], 0, "CAN_COLLIDE"];
-//				[_stretcher, 2] call ace_cargo_fnc_setSize;
-//			};
-//		};
 		_unit allowFleeing 1;
 		_cp = [];
 		switch (tolower str _ms) do {
@@ -48,7 +34,7 @@ if (!(hasinterface && isplayer _unit)) then {
 	} else {
 		if (primaryweapon _unit == "" && alive _unit) then {
 			_containers = [];
-			{if ((weaponcargo _x) select 0 isKindOf ["Rifle_Base_F", configFile >> "CfgWeapons"]) then {_containers pushback _x};} forEach nearestObjects [_unit, ["ReammoBox", "ThingX"], 50];
+			{if ((weaponcargo _x) select 0 isKindOf ["Rifle_Base_F", configFile >> "CfgWeapons"]) then {_containers pushback _x}} forEach nearestObjects [_unit, ["ReammoBox", "ThingX"], 50];
 			if (count _containers > 0) then {
 				_containers = [_containers, [], {_unit distance _x}] call BIS_fnc_sortBy;
 				_container = _containers select 0;
@@ -59,7 +45,7 @@ if (!(hasinterface && isplayer _unit)) then {
 			};
 		};
 		_friendlies = [];
-		{if (side _x == _ms) then {_friendlies pushback _x;};} foreach nearestObjects [getpos _unit, ["AllVehicles"], 500];
+		{if (side _x == _ms) then {_friendlies pushback _x}} foreach nearestObjects [getpos _unit, ["AllVehicles"], 500];
 		_friendlies = [_friendlies, [], {_unit distance _x}] call BIS_fnc_sortBy;
 		if (count _friendlies > 1) then {
 			_grp = group (_friendlies select 1);

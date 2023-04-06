@@ -42,7 +42,27 @@ if (isServer) then {
 				if (primaryweapon _unit != "" && _willdrop) then {_unit remoteexecCall ["ace_hitreactions_fnc_throwWeapon", _unit]};
 				_unit remoteexecCall ["zsn_fnc_unconscious", _unit];
 			} else {
-				[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
+				_vehicle = vehicle _unit;
+				if (_vehicle != _unit) then {
+					_unit leaveVehicle _vehicle;
+				};
+				[_unit, _ms] spawn {
+					params ["_unit", "_ms"];
+					waituntil {sleep 1; vehicle _unit == _unit};
+			//		if (isClass(configFile >> "CfgPatches" >> "vurtual_seat") && ZSN_SpawnStretcher) then {
+			//			_pos = getPos _unit;
+			//			_dir = getDir _unit;
+			//			_stretcher = "vurtual_stretcher" createVehicle [random 10,random 10,0];
+			//			_unit assignAsCargo _stretcher; 
+			//			_unit moveincargo _stretcher; 
+			//			_unit setcaptive true;
+			//			_stretcher lock true; 
+			//			_stretcher setDir _dir;
+			//			_stretcher setVehiclePosition [_pos, [], 0, "CAN_COLLIDE"];
+			//		} else {
+						[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
+			//		};
+				};
 			};
 		}] call CBA_fnc_addEventHandler;
 	};
@@ -65,7 +85,15 @@ if (isServer) then {
 					};
 				};
 			} else {
-				[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
+				_vehicle = vehicle _unit;
+				if (_vehicle != _unit) then {
+					_unit leaveVehicle _vehicle;
+				};
+				[_unit, _ms] spawn {
+					params ["_unit", "_ms"];
+					waituntil {sleep 1; vehicle _unit == _unit};
+					[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
+				};
 			};
 		}] call CBA_fnc_addEventHandler;
 	};
