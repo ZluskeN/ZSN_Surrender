@@ -39,7 +39,7 @@ if (isServer) then {
 			if (_ms == CIVILIAN) exitwith {};
 			if (_isUnconscious) then {
 				_unit setCaptive true;
-				if (primaryweapon _unit != "" && _willdrop) then {_unit remoteexecCall ["ace_hitreactions_fnc_throwWeapon", _unit]};
+				if (primaryweapon _unit != "" && _willdrop) then {_unit remoteexecCall ["ace_common_fnc_throwWeapon", _unit]};
 				_unit remoteexecCall ["zsn_fnc_unconscious", _unit];
 			} else {
 				_vehicle = vehicle _unit;
