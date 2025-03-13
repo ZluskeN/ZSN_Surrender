@@ -16,7 +16,8 @@ waituntil {
 			_flag = _x select 0;
 			if (!alive _unit) exitwith {true};
 			[_flag, (_unit distance _flag), _unit] call zsn_fnc_hint;
-			_bool = (_unit distance _flag < 10);
+			_isStabile = if (ZSN_Requirestabile) then {[_unit] call ace_medical_status_fnc_hasStableVitals} else {true};
+			_bool = (_unit distance _flag < 10 && _isStabile);
 			if (_bool) exitWith {
 				if (!isnull (_unit getVariable "ace_common_owner")) then {
 					_carrier = _unit getVariable "ace_common_owner";

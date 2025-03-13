@@ -55,4 +55,4 @@ if (vehicle _oldunit == _oldunit) then {
 _oldunit setcaptive false;
 _oldunit allowDamage true;
 _oldunit setDammage 1;
-[{_this call zsn_fnc_spawnstretcher}, [ZSN_newunit], 5] call CBA_fnc_waitAndExecute;
+[{(_this select 0) call zsn_fnc_spawnstretcher}, [ZSN_newunit], 5] call CBA_fnc_waitAndExecute;

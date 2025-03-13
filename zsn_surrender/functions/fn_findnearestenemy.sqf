@@ -1,4 +1,4 @@
-params ["_unit","_ms","_hopeless","_enemySides","_list","_nearEnemies","_nearestenemy","_dist","_targets","_isSurrendering"];
+params ["_unit","_ms","_hopeless","_enemySides","_list","_nearEnemies","_nearestenemy","_dist","_targets"];
 _hopeless = false;
 _enemySides = _ms call BIS_fnc_enemySides;
 _list = getpos _unit nearEntities ["AllVehicles", ZSN_surrenderdistance];
@@ -9,8 +9,7 @@ if (count _nearEnemies > 0) then {
 	_targets = getpos _unit nearEntities ["AllVehicles", _dist];
 	if (_ms countSide _targets <= ZSN_Surrendercount) then {
 		_hopeless = true;
-		_unit doWatch _nearestenemy;
-		[_unit, "surrendered to", _nearestenemy] remoteexec ["zsn_fnc_hint"];
+		//[_unit, "surrendered to", _nearestenemy] remoteexec ["zsn_fnc_hint"];
 	};
 };
 _hopeless
