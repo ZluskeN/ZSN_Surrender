@@ -2,19 +2,19 @@
 
 ## Build locally
 
-Make sure pboproject and any dependencies are installed from https://armaservices.maverick-applications.com/Products/MikerosDosTools/FileBrowserFree
+Double click build.bat to generate pbo files in `addons` folder.
 
-Double click build.bat to generate pbo files in @zsn_surrender.
-Check temp for build logs.
+The main repository folder can be used as mod when Arma 3 is launched and it will use the built PBOs in the `addons` folder.
 
-Any private keys in the root Keys folder will be used to sign the PBOs.
-Any public keys in the root Keys folder will be copied to the mod folder.
+## Release locally
 
-## Build on Jenkins
+Double click `release.bat` to generate a release version in `releases`.
 
-Project uses Jenkinsfile to define build steps.
-Add the repository or organization to Jenkins as a pipeline job and it should pick it up automatically.
+`zsn` key in the root `keys` folder will be used to sign the PBOs.
+`zsn` key in the root `keys` folder will be copied to the mod folder.
 
-It requires a node with the label "mikero" and pboproject must be available in PATH
+## Build on GitHub Actions
 
-To enable signing of PBOs, make sure a credential secret file ZLUSKEN_PRIVATE_KEY and ZLUSKEN_PUBLIC_KEY is available.
+Mod is automatically built on push and pull request.
+
+A generated `zsn` key will be used to sign the PBOs.

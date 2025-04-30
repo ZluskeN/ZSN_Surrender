@@ -1,0 +1,14 @@
+name = "ZluskeN Hors de combat"
+prefix = "zsn"
+modname = "zsn_surrender"
+version = "0.0.0"
+author = "ZluskeN"
+files = [
+    "meta.cpp",
+    "mod.cpp",
+    "submit.paa",
+]
+key_name = "zsn"
+reuse_private_key = true
+authority = "zsn"
+sig_version = 3
