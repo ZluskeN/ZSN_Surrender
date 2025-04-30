@@ -16,13 +16,6 @@ if (isServer) then {
 							[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
 						};
 					};
-//					_time = time;
-//					[{((([(_this select 0), (_this select 1)] call zsn_fnc_findnearestenemy) || (time - (_this select 2) > 600)) || ((!alive (_this select 0)) || (!fleeing (_this select 0))))}, {
-//						params ["_unit","_ms","_time"];
-//						if ((alive _unit && fleeing _unit) && [_unit, _ms] call zsn_fnc_findnearestenemy) then {
-//							[_unit, _ms] remoteexecCall ["zsn_fnc_surrendercycle", _unit];
-//						};
-//					}, [_x, _ms, _time]] call CBA_fnc_waitUntilAndExecute;
 				} forEach units _group;
 			};
 		}];
