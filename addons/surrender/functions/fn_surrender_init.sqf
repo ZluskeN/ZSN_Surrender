@@ -1,23 +1,31 @@
 if (isServer) then {
 	params ["_unit"];
-	_unit setvariable ["ZSN_Side", side _unit, true];
-	if (_unit isKindOf "CAManBase" && side _unit != CIVILIAN) then {
-		_time = random 3;
-		_unit setvariable ["ZSN_Group", group _unit, true];
-		_unit setvariable ["ZSN_isSurrendering", false, true];
-		[_unit, _time] remoteExec ["ZSN_fnc_alerted", _unit];
-		if (isClass(configFile >> "CfgPatches" >> "ace_captives")) then {
-			_unit addItem "ACE_CableTie";
-		};
+	_grp = group _unit;
+	_side = side _grp;
+	if (_unit isKindOf "CAManBase" && _side != CIVILIAN) then {
+		_unit setVariable ["ZSN_Group", _grp];
+		_unit setvariable ["ZSN_Side", _side, true];
+		{
+			while {_item = (_x select 0); ({_x == _item} count items _unit) < (_x select 1)} do {
+				_unit addItem (_x select 0);	
+			};
+		} forEach [["ACE_CableTie",1]];
+		_unit addEventHandler ["Killed", {
+			params ["_unit", "_killer", "_instigator", "_useEffects"];
+			if (_unit == ACE_player) then {
+				[{(_this select 0) call zsn_fnc_spawnstretcher}, [_unit], 5] call CBA_fnc_waitAndExecute;
+			};
+		}];
 		_unit addEventHandler ["GetOutMan", {
 			params ["_unit", "_role", "_vehicle"];
 			if (_vehicle iskindof "Air" && _role != "cargo") then {
-				[_unit, _time] spawn {
-					params ["_unit"];
+//				[_unit] spawn {
+//					params ["_unit"];
 					_unit setcaptive true;
-					waituntil {getpos _unit select 2 < 2};
-					_unit setcaptive false;
-				};
+					[{getpos (_this select 0) select 2 < 2}, {(_this select 0) setcaptive false}, [_unit]] call CBA_fnc_waitUntilAndExecute;
+//					waituntil {sleep 1; getpos _unit select 2 < 2};
+//					_unit setcaptive false;
+//				};
 			};
 		}];
 	};

@@ -47,6 +47,14 @@ class CfgFunctions
 	{
 		class Functions
 		{
+			class addTunTickets
+			{
+				file = "\zsn_surrender\functions\fn_addtuntickets.sqf";
+			};
+			class setContainerContents
+			{
+				file = "\zsn_surrender\functions\fn_setcontainercontents.sqf";
+			};
 			class surrenderInit
 			{
 				file = "\zsn_surrender\functions\fn_surrender_init.sqf";
@@ -55,21 +63,21 @@ class CfgFunctions
 			{
 				file = "\zsn_surrender\functions\fn_surrender_cycle.sqf";
 			};
-			class Recover
+			class recover
 			{
 				file = "\zsn_surrender\functions\fn_recover.sqf";
 			};
-			class Hint
+			class replacePlayer
+			{
+				file = "\zsn_surrender\functions\fn_replacePlayer.sqf";
+			};
+			class getContainerContents
+			{
+				file = "\zsn_surrender\functions\fn_getcontainercontents.sqf";
+			};
+			class hint
 			{
 				file = "\zsn_surrender\functions\fn_hint.sqf";
-			};
-			class Alerted
-			{
-				file = "\zsn_surrender\functions\fn_alerted.sqf";
-			};
-			class dropWeapon
-			{
-				file = "\zsn_surrender\functions\fn_dropWeapon.sqf";
 			};
 			class downedInit
 			{
@@ -78,6 +86,26 @@ class CfgFunctions
 			class findNearestEnemy
 			{
 				file = "\zsn_surrender\functions\fn_findNearestEnemy.sqf";
+			};
+			class redeemer
+			{
+				file = "\zsn_surrender\functions\fn_redeemer.sqf";
+			};
+			class spawnStretcher
+			{
+				file = "\zsn_surrender\functions\fn_spawnstretcher.sqf";
+			};
+			class unconscious
+			{
+				file = "\zsn_surrender\functions\fn_unconscious.sqf";
+			};
+			class transferContents
+			{
+				file = "\zsn_surrender\functions\fn_transfercontents.sqf";
+			};
+			class transferLoop
+			{
+				file = "\zsn_surrender\functions\fn_transferloop.sqf";
 			};
 		};
 	};
